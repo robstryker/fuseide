@@ -1,5 +1,5 @@
 /*************************************************************************************
- * Copyright (c) 2013 Red Hat, Inc. and others.
+ * Copyright (c) 2014 Red Hat, Inc. and others.
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,6 @@ import org.eclipse.core.runtime.Status;
 import org.fusesource.ide.server.karaf.core.Activator;
 import org.jboss.jdf.stacks.model.Stacks;
 import org.jboss.tools.as.runtimes.integration.util.AbstractStacksDownloadRuntimesProvider;
-import org.jboss.tools.as.test.core.ASMatrixTests;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
 import org.jboss.tools.stacks.core.model.StacksManager;
 import org.osgi.framework.Bundle;
@@ -64,8 +63,8 @@ public class KarafDownloadRuntimesProvider extends AbstractStacksDownloadRuntime
 		try {
 			url = FileLocator.resolve(bundle.getEntry(path));
 		} catch (IOException e) {
-			String msg = "Cannot find file " + path + " in " + ASMatrixTests.PLUGIN_ID;
-			IStatus status = new Status(IStatus.ERROR, ASMatrixTests.PLUGIN_ID, msg, e);
+			String msg = "Cannot find file " + path + " in " + Activator.PLUGIN_ID;
+			IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, msg, e);
 			throw new CoreException(status);
 		}
 		String location = url.getFile();
