@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.fusesource.ide.commons.Activator;
+import org.jboss.tools.jmx.core.tree.Node;
 
 
 /**
@@ -55,7 +56,7 @@ public abstract class PartialRefreshableNode<K,V> extends RefreshableCollectionN
 	
 	@Override
 	protected void refreshUI() {
-		RefreshableUI ui = getRefreshableUI();
+		RefreshableUI ui = null; // getRefreshableUI();
 		if (ui != null) {
 			if (!addedNodes.isEmpty() || !nodesToRemove.isEmpty()) {
 				List<V> nodesToRefresh = new ArrayList<V>();

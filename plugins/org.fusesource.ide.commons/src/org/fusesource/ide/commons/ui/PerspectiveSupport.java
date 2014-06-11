@@ -16,8 +16,7 @@ import org.eclipse.ui.IPerspectiveFactory;
 public abstract class PerspectiveSupport implements IPerspectiveFactory {
 
 	public static final String ID_FABRIC_EXPORER = "org.fusesource.ide.fabric.navigator";
-	public static final String ID_JMX_EXPORER = "org.fusesource.ide.jmx.ui.internal.views.navigator.MBeanExplorer";
-	public static final String ID_ZK_EXPORER = "org.fusesource.ide.zk.zookeeper.views.explorer.ZooKeeperExplorerView";
+	public static final String ID_JMX_EXPORER = "org.jboss.tools.jmx.ui.internal.views.navigator.MBeanExplorer";
 	public static final String ID_DIAGRAM_VIEW = "org.fusesource.ide.camel.editor.views.DiagramView";
 	public static final String ID_TERMINAL_VIEW = "org.fusesource.ide.server.view.TerminalView";
 	public static final String ID_MESSAGE_TABLE = "org.fusesource.ide.fabric.views.MessageView";

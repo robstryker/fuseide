@@ -26,20 +26,18 @@ import org.fusesource.fon.util.messages.HasNodeStatisticsContainer;
 import org.fusesource.fon.util.messages.IMessage;
 import org.fusesource.fon.util.messages.NodeStatisticsContainer;
 import org.fusesource.ide.camel.editor.AbstractNodes;
-import org.fusesource.ide.camel.editor.Activator;
 import org.fusesource.ide.camel.editor.editor.RiderEditor;
 import org.fusesource.ide.camel.model.AbstractNode;
 import org.fusesource.ide.camel.model.RouteContainer;
 import org.fusesource.ide.camel.model.RouteSupport;
 import org.fusesource.ide.camel.model.generated.Route;
-import org.fusesource.ide.commons.tree.Node;
 import org.fusesource.ide.commons.ui.Selections;
 import org.fusesource.ide.commons.util.Objects;
 import org.fusesource.ide.graph.GraphFilter;
 import org.fusesource.ide.graph.GraphLabelProviderSupport;
 import org.fusesource.ide.graph.GraphViewSupport;
-import org.fusesource.ide.jmx.core.IConnectionWrapper;
-
+import org.jboss.tools.jmx.core.IConnectionWrapper;
+import org.jboss.tools.jmx.core.tree.Node;
 
 /**
  * Shows the selected CamelContexts in a graph

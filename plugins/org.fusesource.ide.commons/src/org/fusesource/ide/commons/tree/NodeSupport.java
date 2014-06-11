@@ -18,6 +18,7 @@ import org.eclipse.ui.views.properties.IPropertySourceProvider;
 import org.fusesource.ide.commons.Activator;
 import org.fusesource.ide.commons.ui.propsrc.BeanPropertySource;
 import org.fusesource.ide.commons.util.Nodes;
+import org.jboss.tools.jmx.core.tree.Node;
 
 
 public abstract class NodeSupport extends Node implements IPropertySourceProvider {
@@ -25,7 +26,7 @@ public abstract class NodeSupport extends Node implements IPropertySourceProvide
 	private IPropertySource propertySource;
 	private Object propertyBean;
 
-	public NodeSupport(org.fusesource.ide.commons.tree.Node parent) {
+	public NodeSupport(Node parent) {
 		super(parent);
 	}
 

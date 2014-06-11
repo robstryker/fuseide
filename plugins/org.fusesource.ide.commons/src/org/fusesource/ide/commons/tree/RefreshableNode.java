@@ -16,6 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.fusesource.ide.commons.Activator;
 import org.fusesource.ide.commons.util.Nodes;
+import org.jboss.tools.jmx.core.tree.Node;
 
 
 public abstract class RefreshableNode extends NodeSupport implements Refreshable {
@@ -44,12 +45,12 @@ public abstract class RefreshableNode extends NodeSupport implements Refreshable
 	}
 
 	protected void refreshUI() {
-		RefreshableUI ui = getRefreshableUI();
-		if (ui != null) {
-			ui.fireRefresh(this, false);
-		} else {
+//		RefreshableUI ui = getRefreshableUI();
+//		if (ui != null) {
+//			ui.fireRefresh(this, false);
+//		} else {
 			Activator.getLogger().warning("Could not find RefreshableUI for " + this);
-		}
+//		}
 		// lets try force a properties UI update
 		Nodes.refreshSelection(this);
 	}

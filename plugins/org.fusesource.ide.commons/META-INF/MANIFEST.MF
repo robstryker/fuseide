@@ -18,7 +18,8 @@ Require-Bundle: io.fabric8.camel-tooling-util;resolution:=optional,
  org.eclipse.ui,
  org.eclipse.ui.ide,
  org.eclipse.ui.views,
- org.eclipse.ui.views.properties.tabbed
+ org.eclipse.ui.views.properties.tabbed,
+ org.jboss.tools.jmx.core;bundle-version="1.6.0"
 Export-Package: org.fusesource.ide.commons,
  org.fusesource.ide.commons.contenttype,
  org.fusesource.ide.commons.jobs,
