@@ -35,7 +35,7 @@ import org.fusesource.ide.commons.util.URIs;
 import org.fusesource.ide.fabric.FabricPlugin;
 import org.fusesource.ide.fabric.camel.FabricCamelPlugin;
 import org.fusesource.ide.fabric.camel.Messages;
-import org.fusesource.ide.jmx.ui.internal.views.navigator.ContextMenuProvider;
+import org.fusesource.ide.commons.ui.ContextMenuProvider;
 
 
 public class EndpointsNode extends RefreshableCollectionNode implements ImageProvider, ContextMenuProvider {

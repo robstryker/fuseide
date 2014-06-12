@@ -39,7 +39,7 @@ import org.fusesource.ide.fabric.navigator.FabricNavigator;
 import org.fusesource.ide.fabric.navigator.FabricNodeProvider;
 import org.fusesource.ide.fabric.navigator.FabricPreferenceInitializer;
 import org.fusesource.ide.fabric.navigator.NodeProvider;
-import org.fusesource.ide.jmx.core.JMXActivator;
+import org.jboss.tools.jmx.core.JMXActivator;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 

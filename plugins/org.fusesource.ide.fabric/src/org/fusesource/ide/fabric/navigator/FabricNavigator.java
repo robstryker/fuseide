@@ -31,16 +31,16 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.ui.navigator.CommonViewer;
 import org.eclipse.ui.part.ResourceTransfer;
-import org.fusesource.ide.commons.tree.Node;
 import org.fusesource.ide.commons.ui.UIConstants;
 import org.fusesource.ide.commons.ui.drop.DelegateDropListener;
 import org.fusesource.ide.commons.ui.drop.DropHandler;
 import org.fusesource.ide.fabric.navigator.cloud.CloudsNode;
-import org.fusesource.ide.jmx.ui.internal.actions.RefreshAction;
-import org.fusesource.ide.jmx.ui.internal.views.navigator.Navigator;
+import org.jboss.tools.jmx.core.tree.Node;
+import org.jboss.tools.jmx.ui.internal.actions.RefreshAction;
+import org.jboss.tools.jmx.ui.internal.views.navigator.JMXNavigator;
 
 
-public class FabricNavigator extends Navigator {
+public class FabricNavigator extends JMXNavigator {
 
 	public static String ID = UIConstants.FABRIC_EXPLORER_VIEW_ID;
 

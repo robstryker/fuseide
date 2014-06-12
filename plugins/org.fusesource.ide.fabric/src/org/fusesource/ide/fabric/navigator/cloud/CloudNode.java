@@ -26,7 +26,7 @@ import org.fusesource.ide.fabric.actions.jclouds.CloudDetails;
 import org.fusesource.ide.fabric.actions.jclouds.CloudDetailsCachedData;
 import org.fusesource.ide.fabric.actions.jclouds.CloudDetailsDeleteAction;
 import org.fusesource.ide.fabric.actions.jclouds.CloudDetailsEditAction;
-import org.fusesource.ide.jmx.ui.internal.views.navigator.ContextMenuProvider;
+import org.fusesource.ide.commons.ui.ContextMenuProvider;
 import org.jclouds.compute.ComputeService;
 
 

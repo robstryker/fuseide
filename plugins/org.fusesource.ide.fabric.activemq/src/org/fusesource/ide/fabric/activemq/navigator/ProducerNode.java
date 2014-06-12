@@ -16,8 +16,8 @@ import java.util.List;
 
 import org.apache.activemq.broker.jmx.ProducerViewMBean;
 import org.fusesource.ide.commons.tree.ConnectedNode;
-import org.fusesource.ide.commons.tree.Node;
 import org.fusesource.ide.commons.tree.NodeSupport;
+import org.jboss.tools.jmx.core.tree.Node;
 
 
 

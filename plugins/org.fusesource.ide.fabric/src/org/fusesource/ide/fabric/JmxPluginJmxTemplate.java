@@ -11,15 +11,16 @@
 
 package org.fusesource.ide.fabric;
 
-import javax.management.MBeanServerConnection;
-import javax.management.remote.JMXConnector;
-
 import io.fabric8.api.FabricException;
 import io.fabric8.service.JmxTemplateSupport;
 import io.fabric8.service.LocalJMXConnector;
-import org.fusesource.ide.jmx.core.IConnectionWrapper;
-import org.fusesource.ide.jmx.core.IJMXRunnable;
-import org.fusesource.ide.jmx.core.JMXException;
+
+import javax.management.MBeanServerConnection;
+import javax.management.remote.JMXConnector;
+
+import org.jboss.tools.jmx.core.IConnectionWrapper;
+import org.jboss.tools.jmx.core.IJMXRunnable;
+import org.jboss.tools.jmx.core.JMXException;
 
 
 public class JmxPluginJmxTemplate extends JmxTemplateSupport {

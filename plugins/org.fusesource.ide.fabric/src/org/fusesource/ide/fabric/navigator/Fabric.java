@@ -43,9 +43,9 @@ import org.fusesource.ide.commons.jobs.Jobs;
 import org.fusesource.ide.commons.tree.GraphableNode;
 import org.fusesource.ide.commons.tree.HasRefreshableUI;
 import org.fusesource.ide.commons.tree.HasViewer;
-import org.fusesource.ide.commons.tree.Node;
 import org.fusesource.ide.commons.tree.RefreshableCollectionNode;
 import org.fusesource.ide.commons.tree.RefreshableUI;
+import org.fusesource.ide.commons.ui.ContextMenuProvider;
 import org.fusesource.ide.commons.ui.ImageProvider;
 import org.fusesource.ide.commons.ui.actions.HasDoubleClickAction;
 import org.fusesource.ide.fabric.FabricConnector;
@@ -58,7 +58,7 @@ import org.fusesource.ide.fabric.actions.FabricDisconnectAction;
 import org.fusesource.ide.fabric.views.logs.FabricLogBrowser;
 import org.fusesource.ide.fabric.views.logs.HasLogBrowser;
 import org.fusesource.ide.fabric.views.logs.ILogBrowser;
-import org.fusesource.ide.jmx.ui.internal.views.navigator.ContextMenuProvider;
+import org.jboss.tools.jmx.core.tree.Node;
 
 import com.google.common.base.Objects;
 

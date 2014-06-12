@@ -24,7 +24,7 @@ import org.fusesource.ide.commons.ui.Shells;
 import org.fusesource.ide.commons.util.Strings;
 import org.fusesource.ide.fabric.FabricPlugin;
 import org.fusesource.ide.fabric.activemq.Messages;
-import org.fusesource.ide.jmx.ui.internal.views.navigator.ContextMenuProvider;
+import org.fusesource.ide.commons.ui.ContextMenuProvider;
 
 
 public class ConsumersNode extends RefreshableCollectionNode implements ImageProvider, ContextMenuProvider {
