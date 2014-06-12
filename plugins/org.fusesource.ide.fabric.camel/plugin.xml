@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+
+
+
+	<extension
+      point="org.eclipse.ui.navigator.navigatorContent">
+       <navigatorContent
+             id="org.fusesource.ide.fabric.camel.jmx.content"
+             name="%NavigatorContent_XMLConfiguration"
+             activeByDefault="true"
+             icon="icons/fabric_explorer.png"
+             priority="normal"
+             contentProvider="org.fusesource.ide.fabric.camel.jmx.content.navigator.providers.CamelNodeContentProvider"
+             labelProvider="org.fusesource.ide.fabric.camel.jmx.content.navigator.providers.CamelNodeLabelProvider">
+          <triggerPoints>
+             <instanceof
+                   value="org.jboss.tools.jmx.core.IConnectionWrapper">
+             </instanceof>
+          </triggerPoints>
+          <possibleChildren>
+             <or>
+                <instanceof
+                      value="java.lang.Object">
+                </instanceof>
+              </or>
+          </possibleChildren>
+       </navigatorContent>
+	</extension>
+
+
+	<extension
+	      point="org.eclipse.ui.navigator.viewer">
+	   <viewerContentBinding
+	         viewerId="org.jboss.tools.jmx.ui.internal.views.navigator.MBeanExplorer">
+	      <includes>
+             <contentExtension
+                isRoot="false"
+                pattern="org.fusesource.ide.fabric.camel.jmx.content">
+             </contentExtension>
+	      </includes>
+	   </viewerContentBinding>
+	</extension>
+
+
+
+
    <extension
          point="org.eclipse.ui.navigator.viewer">
       <viewer
