@@ -39,7 +39,6 @@ import org.fusesource.ide.fabric.navigator.FabricNavigator;
 import org.fusesource.ide.fabric.navigator.FabricNodeProvider;
 import org.fusesource.ide.fabric.navigator.FabricPreferenceInitializer;
 import org.fusesource.ide.fabric.navigator.NodeProvider;
-import org.jboss.tools.jmx.core.JMXActivator;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
@@ -202,13 +201,11 @@ public class FabricPlugin extends ImagesActivatorSupport {
 			new FabricPreferenceInitializer().initializeDefaultPreferences();
 			nodeProvider = new FabricNodeProvider();
 			FabricPlugin.addNodeProvider(nodeProvider);
-			JMXActivator.addNodeProvider(nodeProvider);
 		}
 	}
 
 	public static void unregisterPlugins() {
 		if (nodeProvider != null) {
-			JMXActivator.removeNodeProvider(nodeProvider);
 			FabricPlugin.removeNodeProvider(nodeProvider);
 		}
 		started.set(false);
