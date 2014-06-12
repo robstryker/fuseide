@@ -40,7 +40,7 @@ import org.fusesource.ide.fabric.camel.FabricCamelPlugin;
 import org.fusesource.ide.fabric.camel.Messages;
 import org.fusesource.ide.fabric.navigator.MessageDropHandler;
 import org.fusesource.ide.fabric.navigator.MessageDropTarget;
-import org.fusesource.ide.jmx.ui.internal.views.navigator.ContextMenuProvider;
+import org.fusesource.ide.commons.ui.ContextMenuProvider;
 
 
 public class EndpointNode extends NodeSupport implements IExchangeBrowser, MessageDropTarget, DropHandlerFactory, ImageProvider, ContextMenuProvider{

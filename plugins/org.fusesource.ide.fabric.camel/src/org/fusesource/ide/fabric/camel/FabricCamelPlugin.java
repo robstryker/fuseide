@@ -20,7 +20,7 @@ import org.fusesource.ide.commons.ui.ImagesActivatorSupport;
 import org.fusesource.ide.fabric.FabricPlugin;
 import org.fusesource.ide.fabric.camel.navigator.CamelNodeProvider;
 import org.fusesource.ide.fabric.camel.navigator.CamelPreferenceInitializer;
-import org.fusesource.ide.jmx.core.JMXActivator;
+import org.jboss.tools.jmx.core.JMXActivator;
 import org.osgi.framework.BundleContext;
 
 

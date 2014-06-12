@@ -11,11 +11,12 @@
 
 package org.fusesource.ide.fabric.activemq.navigator;
 
+import io.fabric8.activemq.facade.BrokerFacade;
+import io.fabric8.activemq.facade.SubscriptionViewFacade;
+
 import java.util.Collection;
 
 import org.eclipse.swt.graphics.Image;
-import io.fabric8.activemq.facade.BrokerFacade;
-import io.fabric8.activemq.facade.SubscriptionViewFacade;
 import org.fusesource.ide.commons.tree.RefreshableCollectionNode;
 import org.fusesource.ide.commons.ui.ImageProvider;
 import org.fusesource.ide.fabric.FabricPlugin;

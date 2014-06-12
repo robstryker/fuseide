@@ -19,7 +19,6 @@ import java.util.List;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
-import org.fusesource.ide.commons.tree.Node;
 import org.fusesource.ide.commons.ui.ImageProvider;
 import org.fusesource.ide.commons.ui.propsrc.PropertySourceTableSheetPage;
 import org.fusesource.ide.commons.util.Objects;
@@ -27,6 +26,7 @@ import org.fusesource.ide.fabric.FabricPlugin;
 import org.fusesource.ide.fabric.actions.CreateChildContainerAction;
 import org.fusesource.ide.fabric.actions.CreateSshContainerAction;
 import org.fusesource.ide.fabric.actions.jclouds.CreateJCloudsContainerAction;
+import org.jboss.tools.jmx.core.tree.Node;
 
 public class ContainersNode extends FabricNodeSupport implements ImageProvider {
 	public ContainersNode(Fabric fabric) {
