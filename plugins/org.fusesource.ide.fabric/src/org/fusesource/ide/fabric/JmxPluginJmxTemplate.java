@@ -42,7 +42,7 @@ public class JmxPluginJmxTemplate extends JmxTemplateSupport {
 					try {
 						// TODO replace with better JmxTemplate reusing the
 						// Connection!!!
-						JMXConnector connector = connectionWrapper.getConnector();
+						JMXConnector connector = null; // TODO: find out how to improve -->  connectionWrapper.getConnector();
 						if (connector == null) {
 							connector = new LocalJMXConnector(connection);
 						}
@@ -70,7 +70,7 @@ public class JmxPluginJmxTemplate extends JmxTemplateSupport {
 					try {
 						// TODO replace with better JmxTemplate reusing the
 						// Connection!!!
-						JMXConnector connector = connectionWrapper.getConnector();
+						JMXConnector connector = null; //TODO: find out how to improve -->  connectionWrapper.getConnector();
 						if (connector == null) {
 							connector = new LocalJMXConnector(connection);
 						}
