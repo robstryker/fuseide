@@ -8,7 +8,7 @@
       point="org.eclipse.ui.navigator.navigatorContent">
        <navigatorContent
              id="org.fusesource.ide.fabric.camel.jmx.content"
-             name="%NavigatorContent_XMLConfiguration"
+             name="Camel Contexts"
              activeByDefault="true"
              icon="icons/fabric_explorer.png"
              priority="normal"

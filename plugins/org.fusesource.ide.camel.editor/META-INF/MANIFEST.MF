@@ -44,7 +44,8 @@ Require-Bundle: org.fusesource.ide.camel.model,
  org.eclipse.graphiti.ui,
  org.junit,
  com.google.guava;bundle-version="[15.0.0,16.0.0)",
- org.jboss.tools.jmx.core;bundle-version="1.6.0"
+ org.jboss.tools.jmx.core;bundle-version="1.6.0",
+ org.apache.aries.jmx.core;bundle-version="1.0.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.fusesource.ide.camel.editor
 Bundle-ActivationPolicy: lazy
