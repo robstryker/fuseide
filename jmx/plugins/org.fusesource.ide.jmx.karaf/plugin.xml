@@ -110,5 +110,11 @@
         </connectionLabelProvider>
      </providerUI>
   </extension>
-   
+  <extension
+         point="org.jboss.tools.jmx.local.jvmConnectionLabelProvider">
+      <labelProvider
+            class="org.fusesource.ide.jmx.karaf.connection.ui.AutodetectedKarafLabelProvider"
+            weight="5">
+      </labelProvider>
+   </extension>
 </plugin>
