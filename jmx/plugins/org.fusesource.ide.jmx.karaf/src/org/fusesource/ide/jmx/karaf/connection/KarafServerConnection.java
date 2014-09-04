@@ -136,6 +136,9 @@ public class KarafServerConnection implements IConnectionWrapper, IServerListene
 	public void run(IJMXRunnable runnable, HashMap<String, String> prefs, boolean saveActiveConnection) throws JMXException {
 		// TODO IMPLEMENT THIS or it breaks
 		// TODO:  get the username / pass from the server and pass to other signature
+		String user = null; // TODO
+		String pass = null; // TODO
+		run(server, runnable, user, pass, saveActiveConnection);
 	}
 	
 	protected void run(IServer s, IJMXRunnable r, String user, String pass) throws JMXException {
@@ -144,10 +147,24 @@ public class KarafServerConnection implements IConnectionWrapper, IServerListene
 	
 	protected void run(IServer s, IJMXRunnable r, String user, String pass, boolean saveActiveConnection) throws JMXException {
 		// TODO, create the connection by calling createConnection (or just make it here... your choice)
+		try {
+			MBeanServerConnection c = null;
+			if( activeConnection == null ) {
+				c = createConnection(s);
+				if( saveActiveConnection ) {
+					activeConnection = c;
+				}
+			} else {
+				c = activeConnection;
+			}
+			r.run(c);
+		} catch(Exception e) {
+			// TODO handle this error
+		}
 	}
 
 	protected MBeanServerConnection createConnection(IServer s) throws Exception {
-		return null;
+		return null; // TODO
 	}
 	
 	protected void cleanupConnection(IServer server, MBeanServerConnection connection) {
@@ -271,7 +288,6 @@ public class KarafServerConnection implements IConnectionWrapper, IServerListene
 		if( server.getServerState() == IServer.STATE_STARTED && isConnected ) {
 			if( customJvm == null ) {
 				IActiveJvm active = KarafJVMFacadeUtility.findJvmForServer(server);
-				// TODO cache this activejvm until disconnected
 				try {
 					customJvm = new KarafActiveJvm(this, active);
 				} catch(JvmCoreException jvmce) {
