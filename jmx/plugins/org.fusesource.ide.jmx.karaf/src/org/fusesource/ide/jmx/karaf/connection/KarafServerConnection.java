@@ -109,20 +109,7 @@ public class KarafServerConnection implements IConnectionWrapper, IServerListene
 		return isConnected;
 	}
 
-	public void run(IJMXRunnable runnable) throws JMXException {
-		run(runnable, new HashMap<String, String>());
-	}
-	
-	// Potential api upstream in jmx ?
-	public void run(IJMXRunnable runnable, HashMap<String, String> prefs) throws JMXException {
-		run(runnable, prefs, false);
-	}
-	
-	public void run(IJMXRunnable runnable, HashMap<String, String> prefs, boolean saveActiveConnection) throws JMXException {
-		// TODO IMPLEMENT THIS or it breaks
-	}
-	
-	
+
 	/**
 	 * Some workspaces some previous versions may include server adapters with
 	 * null values for username and password. In some of these situations, providing 
@@ -137,12 +124,26 @@ public class KarafServerConnection implements IConnectionWrapper, IServerListene
 		return true;
 	}
 	
+	public void run(IJMXRunnable runnable) throws JMXException {
+		run(runnable, new HashMap<String, String>());
+	}
+	
+	// Potential api upstream in jmx ?
+	public void run(IJMXRunnable runnable, HashMap<String, String> prefs) throws JMXException {
+		run(runnable, prefs, false);
+	}
+	
+	public void run(IJMXRunnable runnable, HashMap<String, String> prefs, boolean saveActiveConnection) throws JMXException {
+		// TODO IMPLEMENT THIS or it breaks
+		// TODO:  get the username / pass from the server and pass to other signature
+	}
+	
 	protected void run(IServer s, IJMXRunnable r, String user, String pass) throws JMXException {
 		run(s,r,user,pass,false);
 	}
 	
 	protected void run(IServer s, IJMXRunnable r, String user, String pass, boolean saveActiveConnection) throws JMXException {
-
+		// TODO, create the connection by calling createConnection (or just make it here... your choice)
 	}
 
 	protected MBeanServerConnection createConnection(IServer s) throws Exception {
