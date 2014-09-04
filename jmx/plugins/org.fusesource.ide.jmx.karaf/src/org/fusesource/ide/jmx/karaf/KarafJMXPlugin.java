@@ -20,6 +20,8 @@ import org.osgi.framework.BundleContext;
  */
 public class KarafJMXPlugin extends ImagesActivatorSupport {
 
+	public static final String PLUGIN_ID = "org.fusesource.ide.jmx.karaf";
+	
 	private static KarafJMXPlugin plugin;
 
 	/*
