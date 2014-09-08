@@ -12,8 +12,12 @@ package org.fusesource.ide.jmx.karaf.connection;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.management.MBeanServerConnection;
+import javax.management.remote.JMXConnector;
+import javax.management.remote.JMXConnectorFactory;
+import javax.management.remote.JMXServiceURL;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
@@ -28,6 +32,8 @@ import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerListener;
 import org.eclipse.wst.server.core.ServerEvent;
 import org.fusesource.ide.jmx.karaf.KarafJMXPlugin;
+import org.fusesource.ide.server.karaf.core.server.IKarafServerDelegate;
+import org.fusesource.ide.server.karaf.core.util.KarafUtils;
 import org.jboss.tools.jmx.core.ExtensionManager;
 import org.jboss.tools.jmx.core.IConnectionProvider;
 import org.jboss.tools.jmx.core.IConnectionProviderListener;
@@ -134,11 +140,12 @@ public class KarafServerConnection implements IConnectionWrapper, IServerListene
 	}
 	
 	public void run(IJMXRunnable runnable, HashMap<String, String> prefs, boolean saveActiveConnection) throws JMXException {
-		// TODO IMPLEMENT THIS or it breaks
-		// TODO:  get the username / pass from the server and pass to other signature
-		String user = null; // TODO
-		String pass = null; // TODO
-		run(server, runnable, user, pass, saveActiveConnection);
+		if (getServer().getAdapter(IKarafServerDelegate.class) != null) {
+			IKarafServerDelegate kserver = (IKarafServerDelegate) getServer().getAdapter(IKarafServerDelegate.class);
+			String user = kserver.getUserName();
+			String pass = kserver.getPassword();
+			run(server, runnable, user, pass, saveActiveConnection);			
+		}
 	}
 	
 	protected void run(IServer s, IJMXRunnable r, String user, String pass) throws JMXException {
@@ -146,11 +153,10 @@ public class KarafServerConnection implements IConnectionWrapper, IServerListene
 	}
 	
 	protected void run(IServer s, IJMXRunnable r, String user, String pass, boolean saveActiveConnection) throws JMXException {
-		// TODO, create the connection by calling createConnection (or just make it here... your choice)
 		try {
 			MBeanServerConnection c = null;
 			if( activeConnection == null ) {
-				c = createConnection(s);
+				c = createConnection(s, user, pass);
 				if( saveActiveConnection ) {
 					activeConnection = c;
 				}
@@ -159,12 +165,18 @@ public class KarafServerConnection implements IConnectionWrapper, IServerListene
 			}
 			r.run(c);
 		} catch(Exception e) {
-			// TODO handle this error
+			KarafJMXPlugin.getLogger().error(e);
 		}
 	}
 
-	protected MBeanServerConnection createConnection(IServer s) throws Exception {
-		return null; // TODO
+	protected MBeanServerConnection createConnection(IServer s, String user, String pass) throws Exception {
+		Map<String, Object> envMap = new HashMap<String, Object>();
+		envMap.put("jmx.remote.credentials", new String[] { user, pass });
+		String conUrl = KarafUtils.getJMXConnectionURL(s);
+		JMXServiceURL url = new JMXServiceURL(conUrl); 
+		JMXConnector jmxc = JMXConnectorFactory.connect(url, envMap); 
+		MBeanServerConnection mbsc = jmxc.getMBeanServerConnection(); 	
+		return mbsc; 
 	}
 	
 	protected void cleanupConnection(IServer server, MBeanServerConnection connection) {
