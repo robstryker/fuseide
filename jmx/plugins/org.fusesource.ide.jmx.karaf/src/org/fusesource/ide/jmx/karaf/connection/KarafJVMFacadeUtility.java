@@ -46,7 +46,15 @@ public class KarafJVMFacadeUtility {
 			}
 		}
 		
-		String target = main + " " + progArgs;
+		StringBuffer target2 = new StringBuffer();
+		if( main != null ) {
+			target2.append(main);
+			target2.append(" ");
+		}
+		if( progArgs != null ) 
+			target2.append(progArgs);
+		
+		String target = target2.toString();
 		target = target.replaceAll("\"", "").trim();
 		JvmModel model = JvmModel.getInstance();
 		List<IHost> hosts = model.getHosts();
