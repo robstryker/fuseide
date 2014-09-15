@@ -26,13 +26,20 @@ import org.jboss.tools.jmx.local.ui.JVMLabelProviderDelegate;
 public class AutodetectedKarafLabelProvider implements JVMLabelProviderDelegate {
 	private static final String KARAF_HOME_PREFIX = " -Dkaraf.home=";
 	private static final String KARAF_HOME_POSTFIX = " ";
+	
+	private static final String KARAF_TYPE_KARAF 	= "Apache Karaf";
+	private static final String KARAF_TYPE_FUSE  	= "JBoss Fuse";
+	private static final String KARAF_TYPE_FABRIC8 	= "Fabric8";
+	private static final String KARAF_TYPE_AMQ		= "JBoss A-MQ";
+	private static final String KARAF_TYPE_SMX		= "Apache ServiceMix";
+	
 	protected static final Map<String,String> karafSubTypeMap = new HashMap<String, String>();
 	static {
-		karafSubTypeMap.put("default", "Apache Karaf");
-		karafSubTypeMap.put("esb-version.jar", "JBoss Fuse");
-		karafSubTypeMap.put("fabric-version.jar", "Fabric8");
-		karafSubTypeMap.put("mq-version.jar", "JBoss A-MQ");
-		karafSubTypeMap.put("servicemix-version.jar", "Apache ServiceMix");
+		karafSubTypeMap.put("default", KARAF_TYPE_KARAF);
+		karafSubTypeMap.put("esb-version.jar", KARAF_TYPE_FUSE);
+		karafSubTypeMap.put("fabric-version.jar", KARAF_TYPE_FABRIC8);
+		karafSubTypeMap.put("mq-version.jar", KARAF_TYPE_AMQ);
+		karafSubTypeMap.put("servicemix-version.jar", KARAF_TYPE_SMX);
 	}
 	
 	public boolean accepts(IActiveJvm jvm) {
@@ -43,14 +50,16 @@ public class AutodetectedKarafLabelProvider implements JVMLabelProviderDelegate 
 		String karafSubType = getKarafSubtype(karafHomeFolder);
 		Image i = null;
 		if (karafSubType != null) {
-			if (karafSubType.toLowerCase().contains("esb")) {
+			if (karafSubType.equalsIgnoreCase(KARAF_TYPE_FUSE)) {
 				i = KarafJMXPlugin.getDefault().getSharedImages().image(KarafJMXSharedImages.FUSE_PNG);
-			} else if (karafSubType.toLowerCase().contains("fabric")) {
+			} else if (karafSubType.equalsIgnoreCase(KARAF_TYPE_FABRIC8)) {
 				i = KarafJMXPlugin.getDefault().getSharedImages().image(KarafJMXSharedImages.FABRIC_PNG);
-			} else if (karafSubType.toLowerCase().contains("mq")) {
+			} else if (karafSubType.equalsIgnoreCase(KARAF_TYPE_AMQ)) {
 				i = KarafJMXPlugin.getDefault().getSharedImages().image(KarafJMXSharedImages.MQ_PNG);
-			} else if (karafSubType.toLowerCase().contains("servicemix")) {
+			} else if (karafSubType.equalsIgnoreCase(KARAF_TYPE_SMX)) {
 				i = KarafJMXPlugin.getDefault().getSharedImages().image(KarafJMXSharedImages.SMX_PNG);
+			} else if (karafSubType.equalsIgnoreCase(KARAF_TYPE_KARAF)) {
+				i = KarafJMXPlugin.getDefault().getSharedImages().image(KarafJMXSharedImages.KARAF_PNG);
 			} else {
 				i = KarafJMXPlugin.getDefault().getSharedImages().image(KarafJMXSharedImages.CONTAINER_PNG);
 			}

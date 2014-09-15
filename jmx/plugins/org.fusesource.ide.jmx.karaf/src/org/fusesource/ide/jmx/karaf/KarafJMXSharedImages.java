@@ -20,6 +20,7 @@ public class KarafJMXSharedImages extends BaseUISharedImages {
 	public static final String FUSE_PNG = "icons/fuse_server.png";//$NON-NLS-1$
 	public static final String MQ_PNG = "icons/mq_server.png";//$NON-NLS-1$
 	public static final String SMX_PNG = "icons/smx_server.png";//$NON-NLS-1$
+	public static final String KARAF_PNG = "icons/karaf.png";//$NON-NLS-1$
 
 	private static KarafJMXSharedImages shared;
 	public static KarafJMXSharedImages getDefault() {
@@ -36,6 +37,7 @@ public class KarafJMXSharedImages extends BaseUISharedImages {
 		addImage(FUSE_PNG, FUSE_PNG);
 		addImage(MQ_PNG, MQ_PNG);
 		addImage(SMX_PNG, SMX_PNG);
+		addImage(KARAF_PNG, KARAF_PNG);
 	}
 	
 	private KarafJMXSharedImages() {
