@@ -21,6 +21,7 @@ import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
@@ -109,20 +110,19 @@ public class KarafJMXPublisher implements IPublishBehaviour {
 	 * @see org.fusesource.ide.server.karaf.core.publish.IPublishBehaviour#publish(org.eclipse.wst.server.core.IServer, org.eclipse.wst.server.core.IModule)
 	 */
 	@Override
-	public int publish(IServer server, IModule[] module) {
+	public int publish(IServer server, IModule[] module, String symbolicName, String version, IPath file) {
 		// TODO: for now we do the connect each time...very inefficient...try to cache it
 		if (this.jmxc == null) connect(server);
 
 		try {
-			String version = KarafUtils.getBundleVersion(module[0], null);
 			// first check if there is a bundle installed with that name already
-			long bundleId = this.jmxPublisher.getBundleId(mbsc, KarafUtils.getBundleSymbolicName(module[0]), version);
+			long bundleId = this.jmxPublisher.getBundleId(mbsc, symbolicName, version);
 			if (bundleId != -1) {
 				// if yes - reinstall / update the bundle
-				reinstallBundle(server, module[0], bundleId);
+				reinstallBundle(server, bundleId, file);
 			} else {
 				// if no  - fresh install
-				bundleId = installBundle(server, module[0]);
+				bundleId = installBundle(server, file);
 			}			
 			if (bundleId != -1) {
 				// a final check if the bundle is really installed
@@ -140,17 +140,18 @@ public class KarafJMXPublisher implements IPublishBehaviour {
 	 * @see org.fusesource.ide.server.karaf.core.publish.IPublishBehaviour#uninstall(org.eclipse.wst.server.core.IServer, org.eclipse.wst.server.core.IModule)
 	 */
 	@Override
-	public boolean uninstall(IServer server, IModule[] module) {
+	public boolean uninstall(IServer server, IModule[] module, String symbolicName, String version) {
 		if (this.jmxc == null) connect(server);
 		boolean unpublished = false;
 		try {
-			String version = KarafUtils.getBundleVersion(module[0], null);
+//			String version2 = KarafUtils.getBundleVersion(module[0], null);
+//			String symbolicName2 = KarafUtils.getBundleSymbolicName(module[0]);
 			// first check if there is a bundle installed with that name already
-			long bundleId = this.jmxPublisher.getBundleId(mbsc, KarafUtils.getBundleSymbolicName(module[0]), version);
+			long bundleId = this.jmxPublisher.getBundleId(mbsc, symbolicName, version);
 			if (bundleId != -1) {
 				unpublished = this.jmxPublisher.uninstallBundle(mbsc, bundleId);
 			}
-		} catch (CoreException ex) {
+		} catch (Exception ex) {
 			Activator.getLogger().error(ex);
 		} finally {
 			disconnect(server);
@@ -165,10 +166,9 @@ public class KarafJMXPublisher implements IPublishBehaviour {
 	 * @param bundleId
 	 * @return
 	 */
-	private boolean reinstallBundle(IServer server, IModule module, long bundleId) throws CoreException {
-		String fileUrl = KarafUtils.getBundleFilePath(module);
-		if (fileUrl != null) {
-			return this.jmxPublisher.updateBundle(mbsc, bundleId, fileUrl);
+	private boolean reinstallBundle(IServer server, long bundleId, IPath file) throws CoreException {
+		if (file != null) {
+			return this.jmxPublisher.updateBundle(mbsc, bundleId, file.toOSString());
 		}
 		return false;
 	}
@@ -179,10 +179,9 @@ public class KarafJMXPublisher implements IPublishBehaviour {
 	 * @param module
 	 * @return
 	 */
-	private long installBundle(IServer server, IModule module) throws CoreException {
-		String fileUrl = KarafUtils.getBundleFilePath(module);
-		if (fileUrl != null) {
-			long bundleId = this.jmxPublisher.installBundle(mbsc, fileUrl);
+	private long installBundle(IServer server, IPath file) throws CoreException {
+		if (file != null) {
+			long bundleId = this.jmxPublisher.installBundle(mbsc, file.toOSString());
 			return bundleId;
 		}
 		return -1;
