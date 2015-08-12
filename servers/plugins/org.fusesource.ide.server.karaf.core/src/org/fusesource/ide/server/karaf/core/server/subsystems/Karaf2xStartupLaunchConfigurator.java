@@ -195,6 +195,12 @@ public class Karaf2xStartupLaunchConfigurator extends
 	protected void doOverrides(ILaunchConfigurationWorkingCopy launchConfig)
 			throws CoreException {
 		// TODO Auto-generated method stub
+		IKarafRuntime runtime = null;
+		if (server.getRuntime() != null) {
+			runtime = (IKarafRuntime)server.getRuntime().loadAdapter(IKarafRuntime.class, null);
+		}
+		launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, getJreContainerPath(runtime));
+
 		
 	}
 }
