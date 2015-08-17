@@ -306,6 +306,16 @@ public class UniversalEIPNode extends AbstractNode {
     	return ret;
     }
 
+	/**
+	 * Return the typeid of this node, if applicable. 
+	 * This should match the parameter name from the eip.xml model, so for example, 
+	 * doTry, resequence, etc
+	 * @return
+	 */
+	public String getNodeTypeId() {
+		return eip.getName();
+	}
+    
     @Override
     public String getDocumentationFileName() {
     	return documentationMap.get(eip.getName());
@@ -316,10 +326,6 @@ public class UniversalEIPNode extends AbstractNode {
     	return categoryMap.get(eip.getName());
     }
 
-    private String capitalizeFirstLetter(String input) {
-    	return input.substring(0,1).toUpperCase() + input.substring(1);
-    }
-    
     
     
     /*
@@ -463,12 +469,13 @@ public class UniversalEIPNode extends AbstractNode {
 	        	String propertyDescriptorId = propertyPrefix + capitalizeFirstLetter(paramName);
 	        	
 	        	// Replace all camel case with a space so it's human readable
-	        	String display = paramName.replaceAll("(\\p{Ll})(\\p{Lu})","$1 $2");
-	        	PropertyDescriptor desc = createPropertyDescriptor(javaType, propertyDescriptorId, capitalizeFirstLetter(display));
+	        	String display = convertCamelCase(paramName);
+	        	PropertyDescriptor desc = createPropertyDescriptor(javaType, propertyDescriptorId, display);
 	        	descriptors.put(propertyDescriptorId, desc);
         	}
         }
     }
+    
 
     /* (non-Javadoc)
      * @see org.eclipse.ui.views.properties.IPropertySource\#setPropertyValue(java.lang.Object, java.lang.Object)
@@ -492,7 +499,23 @@ public class UniversalEIPNode extends AbstractNode {
     		return propertyValues.get(id);
     	return super.getPropertyValue(id);
     }
-
+    
+	/**
+	 * Pass in a short property, such as "uri" as opposed to "Enrich.Uri"
+	 * @param id
+	 * @return
+	 */
+    public <T> T getShortPropertyValue(String id, Class<T> c) {
+        String eipName = eip.getName();
+        String propertyPrefix = capitalizeFirstLetter(eipName) + ".";
+    	String propertyDescriptorId = propertyPrefix + capitalizeFirstLetter(id);
+    	Object ret = getPropertyValue(propertyDescriptorId);
+    	if( ret != null && c.isInstance(ret)) {
+    		return c.cast(ret);
+    	}
+    	return null;
+	}
+    
     @SuppressWarnings("rawtypes")
     @Override
     public ProcessorDefinition createCamelDefinition() {
