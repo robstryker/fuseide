@@ -142,10 +142,32 @@ public abstract class AbstractNode implements IPropertySource, IAdaptable {
 	private Image smallImage;
 	private Boolean inheritErrorHandler;
 
+	public AbstractNode(RouteContainer parent) {
+		this(parent, false);
+	}
+	public AbstractNode(RouteContainer parent, boolean skipCustomProperties) {
+		this(skipCustomProperties);
+		this.parent = parent;
+		if (parent != null) {
+			parent.addChild(this);
+		}
+	}
+	
 	/**
 	 * default constructor
 	 */
 	public AbstractNode() {
+		this(true);
+		addCustomProperties();
+	}
+
+	/**
+	 * This method is basically only here to allow the delaying of adding custom properties
+	 * until after the subclass's constructor has finished
+	 * 
+	 * @param skipAddCustomProperties
+	 */
+	protected AbstractNode(boolean skipAddCustomProperties) {
 		this.sourceConnections = new ArrayList<Flow>();
 		this.targetConnections = new ArrayList<Flow>();
 		this.listeners = new PropertyChangeSupport(this);
@@ -173,16 +195,11 @@ public abstract class AbstractNode implements IPropertySource, IAdaptable {
 		this.descriptors.get(PROPERTY_DESCRIPTION).setValidator(DEFAULT_STRING_VALIDATOR);
 
 		// now let the subclasses add stuff
-		addCustomProperties(this.descriptors);
+		if( !skipAddCustomProperties)
+			addCustomProperties();
 	}
 
-	public AbstractNode(RouteContainer parent) {
-		this();
-		this.parent = parent;
-		if (parent != null) {
-			parent.addChild(this);
-		}
-	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -324,6 +341,8 @@ public abstract class AbstractNode implements IPropertySource, IAdaptable {
 
 	public String getSmallIconName() {
 		String iconName = getIconName();
+		if( iconName == null )
+			iconName = "generic.png";
 		return iconName.replace(".png", "16.png");
 	}
 
@@ -391,6 +410,14 @@ public abstract class AbstractNode implements IPropertySource, IAdaptable {
 		return null;
 	}
 
+	/**
+	 * allows a subclass to call addCustomProperties once its constructor is complete
+	 */
+	protected void addCustomProperties() {
+		addCustomProperties(descriptors);
+	}
+	
+	
 	/**
 	 * override this method to register class specific property descriptors
 	 * 
