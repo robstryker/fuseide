@@ -50,10 +50,14 @@ public class NodeFactory {
     		return null;
     	}
     	
+    	// Two node types I was unable to convert to Universal node format 
         if (processor instanceof ToDefinition) {
             return Endpoint.newInstance((ToDefinition) processor, parent);
         }
-        
+        else if (processor instanceof RouteDefinition) {
+        	return new Route((RouteDefinition)processor, parent);
+        }
+
         // Classes not yet merged are here:
     	return new UniversalEIPNode(processor, parent, eip);
 

@@ -13,7 +13,6 @@ import org.apache.camel.LoggingLevel;
 import org.apache.camel.ShutdownRoute;
 import org.apache.camel.ShutdownRunningTask;
 import org.apache.camel.ThreadPoolRejectedPolicy;
-import org.apache.camel.model.CatchDefinition;
 import org.apache.camel.model.DataFormatDefinition;
 import org.apache.camel.model.LoadBalancerDefinition;
 import org.apache.camel.model.OnCompletionMode;
@@ -40,252 +39,15 @@ import org.fusesource.ide.commons.properties.UnionTypeValue;
 
 public class UniversalEIPNode extends AbstractNode {
 	
-	private static final HashMap<String, String> iconNameMap;
-	private static final HashMap<String, String> documentationMap;
-	private static final HashMap<String, String> categoryMap;
-	
-	static {
-		iconNameMap = new HashMap<String, String>();
-		documentationMap = new HashMap<String, String>();
-		categoryMap = new HashMap<String, String>();
-		
-		iconNameMap.put("delay", "generic.png");
-		documentationMap.put("delay", "delayEIP");
-		categoryMap.put("delay", "Control Flow");
-		
-		iconNameMap.put("aggregate", "aggregate.png");
-		documentationMap.put("aggregate", "aggregateEIP");
-		categoryMap.put("aggregate", "Routing");
-		
-		iconNameMap.put("aop", "generic.png");
-		documentationMap.put("aop", "AOPEIP");
-		categoryMap.put("aop", "Miscellaneous");
-		
-		iconNameMap.put("bean", "bean.png");
-		documentationMap.put("bean", "beanComp");
-		categoryMap.put("bean", "Components");
-		
-		iconNameMap.put("doCatch", "generic.png");
-		documentationMap.put("catch", "catchEIP");
-		categoryMap.put("doCatch", "Control Flow");
-		
-		iconNameMap.put("choice", "choice.png");
-		documentationMap.put("choice", "choiceEIP");
-		categoryMap.put("choice", "Routing");
-		
-		iconNameMap.put("choice", "choice.png");
-		documentationMap.put("choice", "choiceEIP");
-		categoryMap.put("choice", "Routing");
-		
-		iconNameMap.put("convertBodyTo", "convertBody.png");
-		documentationMap.put("convertBodyTo", "convertEIP");
-		categoryMap.put("convertBodyTo", "Transformation");
-		
-		iconNameMap.put("enrich", "enrich.png");
-		documentationMap.put("enrich", "enrichEIP");
-		categoryMap.put("enrich", "Transformation");
-		
-		iconNameMap.put("filter", "filter.png");
-		documentationMap.put("filter", "filterEIP");
-		categoryMap.put("filter", "Routing");
-		
-		iconNameMap.put("doFinally", "generic.png");
-		documentationMap.put("doFinally", "finallyEIP");
-		categoryMap.put("doFinally", "Control Flow");
-		
-		iconNameMap.put("idempotentConsumer", "idempotentConsumer.png");
-		documentationMap.put("idempotentConsumer", "idempotentConsumer");
-		categoryMap.put("idempotentConsumer", "Routing");
-		
-		iconNameMap.put("inOnly", "transform.png");
-		documentationMap.put("inOnly", "inOnlyEIP");
-		categoryMap.put("inOnly", "Transformation");
-		
-		iconNameMap.put("inOut", "transform.png");
-		documentationMap.put("inOut", "inOutEIP");
-		categoryMap.put("inOut", "Transformation");
-		
-		iconNameMap.put("intercept", "generic.png");
-		documentationMap.put("intercept", "interceptEIP");
-		categoryMap.put("intercept", "Control Flow");
-		
-		iconNameMap.put("interceptFrom", "generic.png");
-		documentationMap.put("interceptFrom", "interceptFromEIP");
-		categoryMap.put("interceptFrom", "Control Flow");
-		
-		iconNameMap.put("interceptSendToEndpoint", "generic.png");
-		documentationMap.put("interceptSendToEndpoint", "interceptSendToEndpointEIP");
-		categoryMap.put("interceptSendToEndpoint", "Control Flow");
-		
-		iconNameMap.put("loadBalance", "loadBalance.png");
-		documentationMap.put("loadBalance", "loadBalanceEIP");
-		categoryMap.put("loadBalance", "Routing");
-		
-		iconNameMap.put("loop", "generic.png");
-		documentationMap.put("loop", "loopEIP");
-		categoryMap.put("loop", "Control Flow");
-		
-		iconNameMap.put("log", "log.png");
-		documentationMap.put("log", "logEIP");
-		categoryMap.put("log", "Components");
-		
-		iconNameMap.put("marshal", "marshal.png");
-		documentationMap.put("marshal", "marshalEIP");
-		categoryMap.put("marshal", "Transformation");
-		
-		iconNameMap.put("multicast", "multicast.png");
-		documentationMap.put("multicast", "multicastEIP");
-		categoryMap.put("multicast", "Routing");
-		
-		iconNameMap.put("onCompletion", "generic.png");
-		documentationMap.put("onCompletion", "onCompleteEIP");
-		categoryMap.put("onCompletion", "Control Flow");
-
-		iconNameMap.put("onException", "generic.png");
-		documentationMap.put("onException", "onExceptionEIP");
-		categoryMap.put("onException", "Control Flow");
-
-		iconNameMap.put("otherwise", "generic.png");
-		documentationMap.put("otherwise", "otherwiseEIP");
-		categoryMap.put("otherwise", "Routing");
-		
-		iconNameMap.put("pipeline", "pipeline.png");
-		documentationMap.put("pipeline", "pipelineEIP");
-		categoryMap.put("pipeline", "Routing");
-		
-		iconNameMap.put("policy", "generic.png");
-		documentationMap.put("policy", "policyNode");
-		categoryMap.put("policy", "Miscellaneous");
-		
-		iconNameMap.put("pollEnrich", "pollEnrich.png");
-		documentationMap.put("pollEnrich", "pollEnrichEIP");
-		categoryMap.put("pollEnrich", "Transformation");
-		
-		iconNameMap.put("process", "process.png");
-		documentationMap.put("process", "processor");
-		categoryMap.put("process", "Components");
-		
-		iconNameMap.put("recipientList", "recipientList.png");
-		documentationMap.put("recipientList", "recipientListEIP");
-		categoryMap.put("recipientList", "Routing");
-		
-		iconNameMap.put("removeHeader", "transform.png");
-		documentationMap.put("removeHeader", "removeHeaderNode");
-		categoryMap.put("removeHeader", "Transformation");
-		
-		iconNameMap.put("removeHeaders", "transform.png");
-		documentationMap.put("removeHeaders", "removeHeadersNode");
-		categoryMap.put("removeHeaders", "Transformation");
-		
-		iconNameMap.put("removeProperty", "transform.png");
-		documentationMap.put("removeProperty", "removePropertyNode");
-		categoryMap.put("removeProperty", "Transformation");
-		
-		iconNameMap.put("removeProperties", "transform.png");
-		documentationMap.put("removeProperties", "allEIPs");
-		categoryMap.put("removeProperties", "Transformation");
-		
-		iconNameMap.put("resequence", "resequence.png");
-		documentationMap.put("resequence", "resequenceEIPs");
-		categoryMap.put("resequence", "Routing");
-		
-		iconNameMap.put("rollback", "generic.png");
-		documentationMap.put("rollback", "rolbackNode");
-		categoryMap.put("rollback", "Control Flow");
-		
-		iconNameMap.put("routingSlip", "routingSlip.png");
-		documentationMap.put("routingSlip", "routingSlipEIP");
-		categoryMap.put("routingSlip", "Routing");
-		
-		iconNameMap.put("sample", "generic.png");  // Warning, this id has changed from Sampling to Sample
-		documentationMap.put("sample", "samplingNode");
-		categoryMap.put("sample", "Miscellaneous");
-		
-		iconNameMap.put("setBody", "setBody.png");  
-		documentationMap.put("setBody", "setBodyNode");
-		categoryMap.put("setBody", "Transformation");
-		
-		iconNameMap.put("setExchangePattern", "transform.png");  
-		documentationMap.put("setExchangePattern", "setExchangePatternNode");
-		categoryMap.put("setExchangePattern", "Transformation");
-		
-		iconNameMap.put("setFaultBody", "transform.png");  
-		documentationMap.put("setFaultBody", "setFaultBodyNode");
-		categoryMap.put("setFaultBody", "Transformation");
-		
-		iconNameMap.put("setHeader", "transform.png");  
-		documentationMap.put("setHeader", "setHeaderNode");
-		categoryMap.put("setHeader", "Transformation");
-		
-		iconNameMap.put("setOutHeader", "transform.png");  
-		documentationMap.put("setOutHeader", "setOutHeaderNode");
-		categoryMap.put("setOutHeader", "Transformation");
-		
-		iconNameMap.put("setProperty", "transform.png");  
-		documentationMap.put("setProperty", "setPropertyNode");
-		categoryMap.put("setProperty", "Transformation");
-		
-		iconNameMap.put("sort", "generic.png");  
-		documentationMap.put("sort", "sortEIP");
-		categoryMap.put("sort", "Routing");
-		
-		iconNameMap.put("split", "split.png");  
-		documentationMap.put("split", "splitEIP");
-		categoryMap.put("split", "Routing");
-		
-		iconNameMap.put("stop", "generic.png");  
-		documentationMap.put("stop", "stopNode");
-		categoryMap.put("stop", "Miscellaneous");
-		
-		iconNameMap.put("threads", "generic.png");  
-		documentationMap.put("threads", "threadNode");
-		categoryMap.put("threads", "Miscellaneous");
-		
-		iconNameMap.put("throttle", "generic.png");  
-		documentationMap.put("throttle", "throttleNode");
-		categoryMap.put("throttle", "Control Flow");
-		
-		iconNameMap.put("throwException", "generic.png");  
-		documentationMap.put("throwException", "throwExceptionNode");
-		categoryMap.put("throwException", "Control Flow");
-		
-		iconNameMap.put("transacted", "generic.png");  
-		documentationMap.put("transacted", "transactedNode");
-		categoryMap.put("transacted", "Control Flow");
-		
-		iconNameMap.put("transform", "transform.png");  
-		documentationMap.put("transform", "transformEIP");
-		categoryMap.put("transform", "Transformation");
-		
-		iconNameMap.put("doTry", "generic.png");  
-		documentationMap.put("doTry", "tryNode");
-		categoryMap.put("doTry", "Control Flow");
-		
-		iconNameMap.put("unmarshal", "unmarshal.png");  
-		documentationMap.put("unmarshal", "unmarshalNode");
-		categoryMap.put("unmarshal", "Transformation");
-
-		iconNameMap.put("validate", "generic.png");  
-		documentationMap.put("validate", "validateNode");
-		categoryMap.put("validate", "Miscellaneous");
-
-		iconNameMap.put("when", "generic.png");  
-		documentationMap.put("when", "whenNode");
-		categoryMap.put("when", "Routing");
-		
-		iconNameMap.put("wireTap", "wireTap.png");  
-		documentationMap.put("wireTap", "wireTapEIP");
-		categoryMap.put("wireTap", "Routing");
-		
-		
-		
-		
-	}
-	
 	
 	private Eip eip;
 	private HashMap<String, Object> propertyValues;
 	private ProcessorDefinition definition;
+	
+    public UniversalEIPNode(Eip eip) {
+    	this.eip = eip;
+    }
+    
     public UniversalEIPNode(ProcessorDefinition definition, RouteContainer parent, Eip eip) {
         super(parent, true);
         this.definition = definition;
@@ -299,11 +61,7 @@ public class UniversalEIPNode extends AbstractNode {
 
     @Override
     public String getIconName() {
-    	String ret = iconNameMap.get(eip.getName());
-    	if( ret == null ) {
-    		System.out.println("Blank");
-    	}
-    	return ret;
+    	return UniversalEIPUtility.getIconName(eip.getName());
     }
 
 	/**
@@ -318,12 +76,12 @@ public class UniversalEIPNode extends AbstractNode {
     
     @Override
     public String getDocumentationFileName() {
-    	return documentationMap.get(eip.getName());
+    	return UniversalEIPUtility.getDocumentationFileName(eip.getName());
     }
 
     @Override
     public String getCategoryName() {
-    	return categoryMap.get(eip.getName());
+    	return UniversalEIPUtility.getCategoryName(eip.getName());
     }
 
     
@@ -507,14 +265,30 @@ public class UniversalEIPNode extends AbstractNode {
 	 */
     public <T> T getShortPropertyValue(String id, Class<T> c) {
         String eipName = eip.getName();
-        String propertyPrefix = capitalizeFirstLetter(eipName) + ".";
-    	String propertyDescriptorId = propertyPrefix + capitalizeFirstLetter(id);
+    	String propertyDescriptorId = getPropertyKey(eipName, id);
     	Object ret = getPropertyValue(propertyDescriptorId);
     	if( ret != null && c.isInstance(ret)) {
     		return c.cast(ret);
     	}
     	return null;
 	}
+    
+    public Object getShortPropertyValue(String id) {
+    	return getShortPropertyValue(id, Object.class);
+    }
+    
+	public void setShortPropertyValue(String id, Object val) {
+        String eipName = eip.getName();
+    	String propertyDescriptorId = getPropertyKey(eipName, id);
+    	setPropertyValue(propertyDescriptorId, val);
+	}
+    
+    public static String getPropertyKey(String eip, String property) {
+        String propertyPrefix = capitalizeFirstLetter(eip) + ".";
+    	String propertyDescriptorId = propertyPrefix + capitalizeFirstLetter(property);
+    	return propertyDescriptorId;
+    	
+    }
     
     @SuppressWarnings("rawtypes")
     @Override

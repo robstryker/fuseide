@@ -60,8 +60,9 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.fusesource.ide.camel.model.generated.Messages;
 import org.fusesource.ide.camel.model.generated.NodeFactory;
-import org.fusesource.ide.camel.model.generated.Otherwise;
 import org.fusesource.ide.camel.model.generated.Tooltips;
+import org.fusesource.ide.camel.model.generated.UniversalEIPNode;
+import org.fusesource.ide.camel.model.generated.UniversalEIPUtility;
 import org.fusesource.ide.camel.model.util.Expressions;
 import org.fusesource.ide.commons.camel.tools.CamelModelUtils;
 import org.fusesource.ide.commons.util.Objects;
@@ -326,10 +327,7 @@ public abstract class AbstractNode implements IPropertySource, IAdaptable {
 
 
 	public String getSmallIconName() {
-		String iconName = getIconName();
-		if( iconName == null )
-			iconName = "generic.png";
-		return iconName.replace(".png", "16.png");
+		return UniversalEIPUtility.getSmallIconName(getNodeTypeId());
 	}
 
 	public Image getImage() {
@@ -612,13 +610,12 @@ public abstract class AbstractNode implements IPropertySource, IAdaptable {
 	public final String getDisplayText() {
 		return getDisplayText(true);
 	}
-    protected String convertCamelCase(String original) {
-    	String display = original.replaceAll("(\\p{Ll})(\\p{Lu})","$1 $2");
-    	return capitalizeFirstLetter(display);
+    protected static String convertCamelCase(String original) {
+    	return Strings.convertCamelCase(original); 
     }
 
-    protected String capitalizeFirstLetter(String input) {
-    	return input.substring(0,1).toUpperCase() + input.substring(1);
+    protected static String capitalizeFirstLetter(String input) {
+    	return Strings.capitalize(input);
     }
     
 	public final String getDisplayText(boolean useID) {
@@ -1075,12 +1072,39 @@ public abstract class AbstractNode implements IPropertySource, IAdaptable {
 	
 	/**
 	 * Pass in a short property, such as "uri" as opposed to "Enrich.Uri"
+	 * 
+	 * The default impl here will return the map value for the id provided. 
+	 * Subclasses (Such as {@link UniversalEIPNode} will change "ref" to 
+	 * Bean.Ref  instead, since that's the key the values are stored under. 
+	 * 
+	 * 
 	 * @param id
 	 * @return
 	 */
 	public <T> T getShortPropertyValue(String id, Class<T> c) {
-		return null;
+		Object ret = getPropertyValue(id);
+    	if( ret != null && c.isInstance(ret)) {
+    		return c.cast(ret);
+    	}
+    	return null;
 	}
+	
+	/**
+	 * Set the short property (such as uri) by discovering what key it is actually
+	 * stored under, and setting that property. 
+	 * 
+	 * For example, a subclass may choose to change "uri" to "Bean.Uri" in a Bean eip element. 
+	 * 
+	 * This abstract class's implementation returns the value of 
+	 * the exact key with no modifications during lookup. 
+	 * 
+	 * @param id
+	 * @param val
+	 */
+	public void setShortPropertyValue(String id, Object val) {
+		setPropertyValue(id, val);
+	}
+
 	
 	/*
 	 * (non-Javadoc)
@@ -1166,8 +1190,8 @@ public abstract class AbstractNode implements IPropertySource, IAdaptable {
 	 */
 	protected boolean isMulticastNode(AbstractNode parent, AbstractNode child) {
 		String parentType, childType;
-		parentType = parent.getNodeTypeId();
-		childType = child.getNodeTypeId();
+		parentType = parent == null ? null : parent.getNodeTypeId();
+		childType = child == null ? null : child.getNodeTypeId();
 		
 		return "multicast".equals(parent) ||
 				("choice".equals(parent) && ("when".equals(child) || "otherwise".equals(child))) ||
@@ -1441,7 +1465,7 @@ public abstract class AbstractNode implements IPropertySource, IAdaptable {
 		// connect to anything
 		if (thisIsChoice) {
 			if (isOtherwise) {
-				List<AbstractNode> outputs = getOutputs(Otherwise.class);
+				List<AbstractNode> outputs = getOutputs("otherwise");
 				return outputs.size() == 0;
 			}
 			// you must also be able to connect to anything from choice
