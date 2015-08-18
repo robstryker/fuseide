@@ -26,22 +26,36 @@ import org.fusesource.ide.camel.editor.utils.MavenUtils;
 import org.fusesource.ide.camel.model.AbstractNode;
 import org.fusesource.ide.camel.model.RouteSupport;
 import org.fusesource.ide.camel.model.catalog.Dependency;
+import org.fusesource.ide.camel.model.catalog.eips.Eip;
+import org.fusesource.ide.camel.model.generated.UniversalEIPNode;
+import org.fusesource.ide.camel.model.generated.UniversalEIPUtility;
 
 
 /**
  * @author lhein
  */
-public class CreateFigureFeature<E> extends AbstractCreateFeature implements PaletteCategoryItemProvider {
+public class CreateFigureFeature extends AbstractCreateFeature implements PaletteCategoryItemProvider {
 
-	private Class<E> clazz;
-	private AbstractNode exemplar;
-
-	public CreateFigureFeature(IFeatureProvider fp, String name, String description, Class<E> clazz) {
+	private Eip eip;
+	private Class<? extends AbstractNode> clazz;
+	public CreateFigureFeature(IFeatureProvider fp, String name, String description, Eip eip) {
 		super(fp, name, description);
-		this.clazz = clazz;
+		this.eip = eip;
+	}
+	public CreateFigureFeature(IFeatureProvider fp, String name, String description, Class<? extends AbstractNode> clazz) {
+		super(fp, name, description);
+		this.clazz = clazz;;
 	}
 
 
+	public Eip getEip() {
+		return eip;
+	}
+	
+	public Class<? extends AbstractNode> getClazz() {
+		return clazz;
+	}
+	
 	@Override
 	public CATEGORY_TYPE getCategoryType() {
 		return CATEGORY_TYPE.getCategoryType(getCategoryName());
@@ -50,9 +64,13 @@ public class CreateFigureFeature<E> extends AbstractCreateFeature implements Pal
 
 	@Override
 	public String getCategoryName() {
-		AbstractNode node = getExemplar();
-		if (node != null) {
-			return node.getCategoryName();
+		if( eip != null )
+			return UniversalEIPUtility.getCategoryName(eip.getName());
+		if( clazz != null ) {
+			Object n = newInstance(clazz);
+			if( n instanceof AbstractNode ) {
+				return ((AbstractNode) n).getCategoryName();
+			}
 		}
 		return null;
 	}
@@ -94,38 +112,14 @@ public class CreateFigureFeature<E> extends AbstractCreateFeature implements Pal
 	 * @return	the icon name or null
 	 */
 	protected String getIconName() {
-		AbstractNode node = getExemplar();
-		if (node != null) {
-			return node.getIconName();
+		if( eip != null )
+			return UniversalEIPUtility.getIconName(eip.getName());
+		AbstractNode an = createNode();
+		if( an != null ) {
+			return an.getIconName();
 		}
-		return null;
+		return "generic.png";
 	}
-
-	/**
-     * @return the clazz
-     */
-    public Class<E> getClazz() {
-        return this.clazz;
-    }
-	
-	/**
-	 * Returns the singleton exemplar node we can use to access things like icons and category names etc
-	 */
-	protected AbstractNode getExemplar() {
-		if (exemplar == null) {
-			try {
-				exemplar = (AbstractNode) clazz.newInstance();
-			} catch (Exception e) {
-				Activator.getLogger().warning("Failed to create instance of " + clazz + ". " + e, e);
-			}
-		}
-		return exemplar;
-	}
-
-	protected void setExemplar(AbstractNode exemplar) {
-		this.exemplar = exemplar;
-	}
-
 
 	/*
 	 * (non-Javadoc)
@@ -158,16 +152,29 @@ public class CreateFigureFeature<E> extends AbstractCreateFeature implements Pal
 
 
 	protected AbstractNode createNode() {
-		AbstractNode node = null;
-
-		try {
-			node = (AbstractNode)this.clazz.newInstance();
-		} catch (Exception ex) {
-			throw new RuntimeException(ex);
+		if( eip != null )
+			return new UniversalEIPNode(eip);
+		if( clazz != null ) {
+			Object o = newInstance(clazz);
+			if( o instanceof AbstractNode ) {
+				return ((AbstractNode)o);
+			}
 		}
-		return node;
+		return null;
 	}
-	
+
+	protected Object newInstance(final Class<?> aClass) {
+		if( aClass == null ) {
+			System.out.println("Dead");
+		}
+		try {
+			return aClass.newInstance();
+		} catch (Exception e) {
+			Activator.getLogger().warning("Failed to create instance of " + aClass.getName() + ". " + e, e);
+			return null;
+		}
+	}
+
     /**
      * checks if we need to add a maven dependency for the chosen component
      * and inserts it into the pom.xml if needed
