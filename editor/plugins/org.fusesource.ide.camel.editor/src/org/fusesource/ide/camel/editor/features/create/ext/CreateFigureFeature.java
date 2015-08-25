@@ -66,11 +66,9 @@ public class CreateFigureFeature extends AbstractCreateFeature implements Palett
 	public String getCategoryName() {
 		if( eip != null )
 			return UniversalEIPUtility.getCategoryName(eip.getName());
-		if( clazz != null ) {
-			Object n = newInstance(clazz);
-			if( n instanceof AbstractNode ) {
-				return ((AbstractNode) n).getCategoryName();
-			}
+		AbstractNode an = createNode();
+		if( an != null ) {
+			return an.getCategoryName();
 		}
 		return null;
 	}
@@ -151,6 +149,13 @@ public class CreateFigureFeature extends AbstractCreateFeature implements Palett
 	}
 
 
+	/**
+	 * Create a new node of this figure feature's underlying node. 
+	 * Default implementation will use either an eip or an Abstract Node class. 
+	 * Subclasses with neither should override this method.
+	 * 
+	 * @return
+	 */
 	protected AbstractNode createNode() {
 		if( eip != null )
 			return new UniversalEIPNode(eip);
@@ -165,7 +170,7 @@ public class CreateFigureFeature extends AbstractCreateFeature implements Palett
 
 	protected Object newInstance(final Class<?> aClass) {
 		if( aClass == null ) {
-			System.out.println("Dead");
+			System.out.println("Dead, left for POC debugging");
 		}
 		try {
 			return aClass.newInstance();
