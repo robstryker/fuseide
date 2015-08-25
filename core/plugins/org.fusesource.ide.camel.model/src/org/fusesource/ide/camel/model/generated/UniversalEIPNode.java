@@ -321,49 +321,70 @@ public class UniversalEIPNode extends AbstractNode {
 		String paramName = p.getName();
     	String propertyDescriptorId = propertyPrefix + capitalizeFirstLetter(paramName);
     	Object val = propertyValues.get(propertyDescriptorId);
-		String setterMethod = "set" + capitalizeFirstLetter(p.getName());
+    	
+    	String originalField = p.getOriginalFieldName();
+    	if( originalField == null )
+    		originalField = p.getName();
+    	
+		String setterMethod = "set" + capitalizeFirstLetter(originalField);
 		Class paramClass = findClass(p.getJavaType());
 		Method m = null;
 		if( paramClass != null ) {
+			// First try using a setter based on original field name
 			try {
 				m = answer.getClass().getMethod(setterMethod, paramClass);
+				if( m != null ) {
+					m.invoke(answer, val);
+					return;
+				}
 			} catch(NoSuchMethodException nsme) {
-				nsme.printStackTrace();
+				System.out.println("Method " + setterMethod + " does not exist for eip " + eip.getName() + " :: " + nsme.getMessage());
+				//nsme.printStackTrace();
+			} catch(IllegalAccessException iae) {
+				System.out.println("Method " + setterMethod + " does not exist for eip " + eip.getName() + " :: " + iae.getMessage());
+//				iae.printStackTrace();
+			} catch(InvocationTargetException ite) {
+				System.out.println("Method " + setterMethod + " does not exist for eip " + eip.getName() + " :: " + ite.getMessage());
+//				ite.printStackTrace();
 			}
+			
+			// Try to find a field with the parameter name?
+			try {
+				Objects.setField(answer, originalField, toXmlPropertyValue(propertyDescriptorId, val));
+				return;
+			} catch(Exception e) {
+				System.out.println("Field name " + originalField + " does not exist for eip " + eip.getName() + " :: " + e.getMessage());
+//				e.printStackTrace();
+			}
+			
+			// Ok, no setter and field does not exist, try some other variations
 			if( m == null ) {
 				// It's possible the model is wrong and the setter doesn't match the param name
 				// We may try adding an 's' at the end in case the param is 'exception' but the setter is setExceptions
 				try {
 					m = answer.getClass().getMethod(setterMethod + "s", paramClass);
+					if( m != null ) {
+			    		m.invoke(answer, val);
+			    		return;
+					}
 				} catch(NoSuchMethodException nsme2) {
-					nsme2.printStackTrace();
-				}
-			}
-			
-			if( m != null ) {
-				try {
-		    		m.invoke(answer, val);
-		    		return;
+					System.out.println("Method name " + setterMethod + "s does not exist for eip " + eip.getName() + " :: " + nsme2.getMessage());
+//					nsme2.printStackTrace();
 				} catch(IllegalAccessException iae) {
-					iae.printStackTrace();
+					System.out.println("Method name " + setterMethod + "s does not exist for eip " + eip.getName() + " :: " + iae.getMessage());
+//					iae.printStackTrace();
 				} catch(InvocationTargetException ite) {
-					ite.printStackTrace();
+					System.out.println("Method name " + setterMethod + "s does not exist for eip " + eip.getName() + " :: " + ite.getMessage());
+//					ite.printStackTrace();
 				}
-			} 
-
-			// Try to find a field with the parameter name?
-			try {
-				Objects.setField(answer, paramName, toXmlPropertyValue(propertyDescriptorId, val));
-				return;
-			} catch(Exception e) {
-				e.printStackTrace();
 			}
 
+			// No field, no setter,  no plural setter.  attempt plural field
 			try {
 				Objects.setField(answer, paramName + "s", toXmlPropertyValue(propertyDescriptorId, val));
 				return;
 			} catch(Exception e2) {
-				e2.printStackTrace();
+				System.out.println("Field name " + originalField + "s does not exist for eip " + eip.getName() + " :: " + e2.getMessage());
 			}
 			
 			throw new Exception("All attempts at setting value have failed for parameter " + p.getName());

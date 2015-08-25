@@ -110,13 +110,16 @@ public class CreateFigureFeature extends AbstractCreateFeature implements Palett
 	 * @return	the icon name or null
 	 */
 	protected String getIconName() {
+		String ret = null;
 		if( eip != null )
-			return UniversalEIPUtility.getIconName(eip.getName());
-		AbstractNode an = createNode();
-		if( an != null ) {
-			return an.getIconName();
+			ret = UniversalEIPUtility.getIconName(eip.getName());
+		if( ret == null ) {
+			AbstractNode an = createNode();
+			if( an != null ) {
+				ret = an.getIconName();
+			}
 		}
-		return "generic.png";
+		return ret != null ? ret : "generic.png";
 	}
 
 	/*

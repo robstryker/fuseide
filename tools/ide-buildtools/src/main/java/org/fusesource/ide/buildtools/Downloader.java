@@ -2425,30 +2425,38 @@ public class Downloader {
 				EIPProperty p = mapper.convertValue(properties.get(paramName), EIPProperty.class);
 				p.setName(paramName);
 				
-				// now look for variables in the class which have jaxb annotation with that name
-				String varName = p.getName();
-				try {
-					Class c = Class.forName(eip.getJavaType());
-					for (Field f : c.getDeclaredFields()) {
-						if (f.getName().equals(paramName) == false) continue;
-						Annotation[] annos = f.getDeclaredAnnotations();
-						for (Annotation a : annos) {
-							if (a instanceof javax.xml.bind.annotation.XmlElement) {
-								javax.xml.bind.annotation.XmlElement e = (javax.xml.bind.annotation.XmlElement)a;
-								if (f.getName().equals(e.name()) == false) {
-									varName = f.getName();
-								}
-								break;
+				String originalVar = getOriginalVarName(eip.getJavaType(), p.getName());
+				p.setOriginalVariableName(originalVar);
+				params.add(p);
+			}
+		}
+		
+		private String getOriginalVarName(String javaType, String paramName) {
+			// now look for variables in the class which have jaxb annotation with that name
+			String varName = paramName;
+			try {
+				Class c = Class.forName(javaType);
+				for (Field f : c.getDeclaredFields()) {
+					Annotation[] annos = f.getDeclaredAnnotations();
+					for (Annotation a : annos) {
+						if (a instanceof javax.xml.bind.annotation.XmlElement) {
+							javax.xml.bind.annotation.XmlElement e = (javax.xml.bind.annotation.XmlElement)a;
+							if (e.name().equals(varName) && f.getName().equals(e.name()) == false) {
+								return f.getName();
+							}
+						}
+						if (a instanceof javax.xml.bind.annotation.XmlAttribute) {
+							javax.xml.bind.annotation.XmlAttribute e = (javax.xml.bind.annotation.XmlAttribute)a;
+							if (e.name().equals(varName) && f.getName().equals(e.name()) == false) {
+								return f.getName();
 							}
 						}
 					}
-				} catch (ClassNotFoundException cnfex) {
-					cnfex.printStackTrace();
-				} finally {
-					p.setOriginalVariableName(varName);
 				}
-				params.add(p);
+			} catch (ClassNotFoundException cnfex) {
+				cnfex.printStackTrace();
 			}
+			return varName;
 		}
     }
 }
