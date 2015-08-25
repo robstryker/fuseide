@@ -45,11 +45,13 @@ public class UniversalEIPNode extends AbstractNode {
 	private ProcessorDefinition definition;
 	
     public UniversalEIPNode(Eip eip) {
+    	super(null, true);
     	this.eip = eip;
+    	propertyValues = new HashMap<String, Object>();
     }
     
     public UniversalEIPNode(ProcessorDefinition definition, RouteContainer parent, Eip eip) {
-        super(parent, true);
+        super(true);
         this.definition = definition;
         this.eip = eip;
         addCustomProperties();

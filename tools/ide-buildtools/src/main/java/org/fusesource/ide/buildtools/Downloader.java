@@ -10,18 +10,14 @@
  ******************************************************************************/
 package org.fusesource.ide.buildtools;
 
-import io.fabric8.insight.maven.aether.Aether;
-import io.fabric8.insight.maven.aether.AetherResult;
-import io.fabric8.insight.maven.aether.Repository;
-import io.hawt.maven.indexer.ArtifactDTO;
-import io.hawt.maven.indexer.MavenIndexerFacade;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -42,6 +38,13 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.xml.txw2.annotation.XmlElement;
+
+import io.fabric8.insight.maven.aether.Aether;
+import io.fabric8.insight.maven.aether.AetherResult;
+import io.fabric8.insight.maven.aether.Repository;
+import io.hawt.maven.indexer.ArtifactDTO;
+import io.hawt.maven.indexer.MavenIndexerFacade;
 
 public class Downloader {
 
@@ -169,7 +172,7 @@ public class Downloader {
         String[] repositories = { "http://repository.jboss.org/nexus/content/groups/ea/", "http://repo1.maven.org/maven2" };
         indexer.setRepositories(repositories);
         indexer.setCacheDirectory(new File(targetDir(), "mavenIndexer"));
-        indexer.start();
+//        indexer.start();
 
         List<Repository> repos = Aether.defaultRepositories();
         repos.add(new Repository("ea.repository.jboss.org", "http://repository.jboss.org/nexus/content/groups/ea"));
@@ -181,8 +184,8 @@ public class Downloader {
     }
 
     public void run() throws Exception {
-        downloadArchetypes();
-        downloadXsds();
+//        downloadArchetypes();
+//        downloadXsds();
         downloadCamelCatalogModelData();
     }
 
@@ -596,6 +599,7 @@ public class Downloader {
                 	}
                 }
                 if (p.getRequired() != null) out.print("required=\"" + p.getRequired() + "\" ");
+                if (p.getOriginalVariableName() != null) out.print("originalFieldName=\"" + p.getOriginalVariableName() + "\" ");
                 out.println("description=\"" + (p.getDescription() != null ? p.getDescription() : "") + "\"/>");
             }           
             out.println("      </parameters>");            
@@ -2183,6 +2187,7 @@ public class Downloader {
     		private String[] oneOf;
     		@JsonProperty("enum")
         	private String[] choice;
+    		private String originalVariableName;
     		
     		/**
 			 * @return the oneOf
@@ -2351,6 +2356,20 @@ public class Downloader {
     			}
     			return retVal;
     		}
+    		
+    		/**
+			 * @return the originalVariableName
+			 */
+			public String getOriginalVariableName() {
+				return this.originalVariableName;
+			}
+			
+			/**
+			 * @param originalVariableName the originalVariableName to set
+			 */
+			public void setOriginalVariableName(String originalVariableName) {
+				this.originalVariableName = originalVariableName;
+			}
     	}
     	
     	@JsonProperty("model")
@@ -2405,6 +2424,29 @@ public class Downloader {
 				String paramName = it.next();
 				EIPProperty p = mapper.convertValue(properties.get(paramName), EIPProperty.class);
 				p.setName(paramName);
+				
+				// now look for variables in the class which have jaxb annotation with that name
+				String varName = p.getName();
+				try {
+					Class c = Class.forName(eip.getJavaType());
+					for (Field f : c.getDeclaredFields()) {
+						if (f.getName().equals(paramName) == false) continue;
+						Annotation[] annos = f.getDeclaredAnnotations();
+						for (Annotation a : annos) {
+							if (a instanceof javax.xml.bind.annotation.XmlElement) {
+								javax.xml.bind.annotation.XmlElement e = (javax.xml.bind.annotation.XmlElement)a;
+								if (f.getName().equals(e.name()) == false) {
+									varName = f.getName();
+								}
+								break;
+							}
+						}
+					}
+				} catch (ClassNotFoundException cnfex) {
+					cnfex.printStackTrace();
+				} finally {
+					p.setOriginalVariableName(varName);
+				}
 				params.add(p);
 			}
 		}
