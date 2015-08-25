@@ -251,9 +251,6 @@ public class UniversalEIPUtility {
 	
     public static String getIconName(String eipName) {
     	String ret = iconNameMap.get(eipName);
-    	if( ret == null ) {
-    		System.out.println("Blank");
-    	}
     	return ret;
     }
 
