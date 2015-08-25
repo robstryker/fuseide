@@ -201,7 +201,7 @@ public abstract class AbstractAddNodeMenuFactory {
 			String description = "bean '" + name + "' of type " + aClass;
 			
 			String version =  CamelModelFactory.getCamelVersion(null); 
-			Eip eip = CamelModelFactory.getModelForVersion(version).getEipModel().getEIPByClass("bean");
+			final Eip eip = CamelModelFactory.getModelForVersion(version).getEipModel().getEIPByClass("bean");
 			
 			CreateNodeConnectionFeature f = new CreateNodeConnectionFeature(fp, eip) {
 				@Override
@@ -487,7 +487,7 @@ public abstract class AbstractAddNodeMenuFactory {
 	}
 	
 	protected void addMenuItem(IMenuManager menu, final String title, final String description, 
-			AbstractNode newNode, Eip eip, final Class<? extends AbstractNode> aClass) {
+			final AbstractNode newNode, final Eip eip, final Class<? extends AbstractNode> aClass) {
 			if (newNode instanceof RouteSupport || (selectedNode != null && selectedNode.canConnectTo(newNode))) {
 				final AbstractNode node = selectedNode;
 				Action action = new Action() {
