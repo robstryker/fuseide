@@ -124,7 +124,6 @@ Export-Package: org.apache.camel;x-friends:="org.jboss.tools.fuse.transformation
  org.apache.camel.view;x-friends:="org.jboss.tools.fuse.transformation.editor",
  org.fusesource.ide.commons,
  org.fusesource.ide.commons.camel.tools,
- org.fusesource.ide.commons.camel.tools.parser,
  org.fusesource.ide.commons.contenttype,
  org.fusesource.ide.commons.jobs,
  org.fusesource.ide.commons.logging,

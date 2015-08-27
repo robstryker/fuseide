@@ -10,7 +10,8 @@ Require-Bundle: org.jboss.tools.foundation.core;bundle-version="1.2.0",
 Export-Package: de.pdark.decentxml,
  de.pdark.decentxml.dtd,
  de.pdark.decentxml.mapping,
- de.pdark.decentxml.validation
+ de.pdark.decentxml.validation,
+ org.fusesource.ide.foundation.core.xml.internal.parser
 Bundle-Activator: org.fusesource.ide.foundation.core.internal.FoundationCoreActivator
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
