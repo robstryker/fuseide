@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -1230,7 +1231,20 @@ public abstract class AbstractNode implements IPropertySource, IAdaptable {
 		if (processor instanceof ChoiceDefinition) {
 			ChoiceDefinition choice = (ChoiceDefinition) processor;
 			if (toNode instanceof WhenDefinition) {
-				choice.getWhenClauses().add((WhenDefinition) toNode);
+				List<WhenDefinition> defs = choice.getWhenClauses();
+				boolean found = false;
+				Iterator<WhenDefinition> it = defs.iterator();
+				while(it.hasNext() && !found) {
+					WhenDefinition t = it.next();
+					if( t.getLabel().equals(toNode.getLabel())) {
+						// Two nodes have the same 'when'
+						found = true;
+					}
+				}
+				if( !found) {
+					// avoid duplicates
+					choice.getWhenClauses().add((WhenDefinition) toNode);
+				}
 			} else if (toNode instanceof OtherwiseDefinition) {
 				choice.setOtherwise((OtherwiseDefinition) toNode);
 			} else {
@@ -1296,15 +1310,6 @@ public abstract class AbstractNode implements IPropertySource, IAdaptable {
 			if (!processedNodes.contains(target)) {
 				addCamelOutput(processor, toNode);
 				processedNodes.add(target);
-			}
-
-
-			// Convert any expressions to the real underlying XML
-			IPropertyDescriptor[] propertyDescriptors = getPropertyDescriptors();
-			for (IPropertyDescriptor descriptor : propertyDescriptors) {
-				if (descriptor instanceof ExpressionPropertyDescriptor) {
-
-				}
 			}
 
 
