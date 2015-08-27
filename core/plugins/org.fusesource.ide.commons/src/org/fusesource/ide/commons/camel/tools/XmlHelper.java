@@ -15,72 +15,8 @@
  */
 package org.fusesource.ide.commons.camel.tools;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.fusesource.ide.foundation.core.xml.XmlEscapeUtility;
 
-public class XmlHelper {
-
-    protected static Map<Character, String> encodingMap = new HashMap<Character, String>();
-
-    static {
-        encodingMap.put('"', "&quot;");
-        encodingMap.put('&', "&amp;");
-        encodingMap.put('<', "&lt;");
-        encodingMap.put('>', "&gt;");
-    }
-
-//    /**
-//     * Returns the integer value of the given attribute or return the default value if none is provided
-//     */
-//    public static int attributeIntValue(Node e, String name, int defaultValue) {
-//        e.get
-//        e.attribute(name) match {
-//    case Some(s) =>
-//        if (s.isEmpty) {
-//            defaultValue
-//        }
-//        else {
-//            s.head.text.toInt
-//        }
-//    case _ => defaultValue
-//        }
-//        }
-//        /**
-//         * Returns the double value of the given attribute or return the default value if none is provided
-//         */
-//        def attributeDoubleValue(e: Node, name: String, defaultValue: Double = -1): Double = {
-//        e.attribute(name) match {
-//    case Some(s) =>
-//        if (s.isEmpty) {
-//            defaultValue
-//        }
-//        else {
-//            s.head.text.toDouble
-//        }
-//    case _ => defaultValue
-//        }
-//        }
-
-    public static String escape(String text) {
-        StringBuffer sb = new StringBuffer();
-        for (char c : text.toCharArray()) {
-            escape(c, sb);
-        }
-        return sb.toString();
-    }
-
-    public static String unescape(String text) {
-        // TODO would be much more efficient to find all & first!
-        String answer = text;
-        for (Map.Entry<Character, String> e : encodingMap.entrySet()) {
-            answer = answer.replaceAll(e.getValue(), e.getKey().toString());
-        }
-        return answer;
-    }
-
-    private static StringBuffer escape(char c, StringBuffer buffer) {
-        String encoded = encodingMap.get(c);
-        return buffer.append(encoded == null ? Character.toString(c) : encoded);
-    }
-
+@Deprecated
+public class XmlHelper extends XmlEscapeUtility {
 }

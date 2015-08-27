@@ -11,30 +11,8 @@
 
 package org.fusesource.ide.commons.util;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
+import org.fusesource.ide.foundation.core.xml.XmlEscapeUtility;
 
-public class XmlUtilities {
-
-	protected static Map<String, String> unescape = new HashMap<String, String>();
-	
-	static {
-		unescape.put("&lt;", "<");
-		unescape.put("&gt;", ">");
-		unescape.put("&amp;", "&");
-		unescape.put("&quot;", "\"");
-	}
-	
-	public static String unescape(String text) {
-		if (text == null) {
-			return null;
-		}
-		Set<Entry<String, String>> entrySet = unescape.entrySet();
-		for (Entry<String, String> entry : entrySet) {
-			text = text.replaceAll(entry.getKey(), entry.getValue());
-		}
-		return text;
-	}
+@Deprecated
+public class XmlUtilities extends XmlEscapeUtility {
 }
