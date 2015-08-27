@@ -31,6 +31,8 @@ import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.model.RoutesDefinition;
 import org.apache.camel.spring.CamelContextFactoryBean;
 import org.apache.camel.spring.CamelEndpointFactoryBean;
+import org.fusesource.ide.camel.model.service.core.CamelServiceManagerUtil;
+import org.fusesource.ide.camel.model.service.core.ICamelManagerService;
 import org.fusesource.ide.commons.Activator;
 import org.xml.sax.SAXException;
 
@@ -49,6 +51,10 @@ public class XmlModel {
     private boolean routesContext;
 
     public XmlModel(CamelContextFactoryBean contextElement, Document doc, Map<String, BeanDef> beans, Node node, String ns, boolean justRoutes, boolean routesContext) {
+    	// TODO just a simple test, please delete
+    	ICamelManagerService c = CamelServiceManagerUtil.getManagerService("2.15.2");
+    	c.doSomething();
+    	
         this.contextElement = contextElement;
         this.doc = doc;
         this.beans = beans;
