@@ -13,7 +13,7 @@
  *  implied.  See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-package org.fusesource.ide.commons.camel.tools.parser;
+package org.fusesource.ide.foundation.core.xml.internal.parser;
 
 import de.pdark.decentxml.XMLParser;
 import de.pdark.decentxml.XMLSource;
