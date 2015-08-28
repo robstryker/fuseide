@@ -26,7 +26,7 @@ import org.fusesource.ide.camel.model.catalog.CamelModel;
 import org.fusesource.ide.camel.model.catalog.CamelModelFactory;
 import org.fusesource.ide.camel.model.catalog.eips.Eip;
 import org.fusesource.ide.camel.model.generated.UniversalEIPUtility;
-import org.fusesource.ide.commons.camel.tools.Strings;
+import org.fusesource.ide.foundation.core.util.Strings;
 
 /**
  * A helper class for creating a popup menu to allow the addition of new nodes in a context menu.

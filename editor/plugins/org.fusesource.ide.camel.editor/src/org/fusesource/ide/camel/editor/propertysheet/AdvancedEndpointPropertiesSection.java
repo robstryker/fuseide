@@ -86,7 +86,7 @@ import org.fusesource.ide.camel.model.catalog.components.Component;
 import org.fusesource.ide.camel.model.catalog.components.UriParameter;
 import org.fusesource.ide.camel.model.catalog.components.UriParameterKind;
 import org.fusesource.ide.commons.ui.Selections;
-import org.fusesource.ide.commons.util.Strings;
+import org.fusesource.ide.foundation.core.util.Strings;
 
 /**
  * @author lhein

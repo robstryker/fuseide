@@ -86,7 +86,7 @@ import org.fusesource.ide.camel.model.catalog.CamelModelFactory;
 import org.fusesource.ide.camel.model.catalog.eips.Eip;
 import org.fusesource.ide.camel.model.generated.UniversalEIPNode;
 import org.fusesource.ide.commons.camel.tools.BeanDef;
-import org.fusesource.ide.commons.util.Strings;
+import org.fusesource.ide.foundation.core.util.Strings;
 
 
 /**

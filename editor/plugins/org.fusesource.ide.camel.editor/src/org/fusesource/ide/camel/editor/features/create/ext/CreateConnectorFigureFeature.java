@@ -18,7 +18,7 @@ import org.fusesource.ide.camel.model.AbstractNode;
 import org.fusesource.ide.camel.model.ConnectorEndpoint;
 import org.fusesource.ide.camel.model.catalog.components.Component;
 import org.fusesource.ide.camel.model.catalog.eips.Eip;
-import org.fusesource.ide.commons.util.Strings;
+import org.fusesource.ide.foundation.core.util.Strings;
 
 /**
  * @author lhein

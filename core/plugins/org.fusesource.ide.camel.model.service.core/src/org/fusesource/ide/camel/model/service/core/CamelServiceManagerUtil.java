@@ -10,9 +10,15 @@
  ******************************************************************************/ 
 package org.fusesource.ide.camel.model.service.core;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.fusesource.ide.camel.model.service.core.internal.CamelModelServiceCoreActivator;
+import org.fusesource.ide.foundation.core.util.BundleUtils;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
 
 /**
  * A utility class for retrieving a IJBoss7ManagerService or 
@@ -34,6 +40,24 @@ public class CamelServiceManagerUtil {
 			CamelManagerServiceProxy proxy = new CamelManagerServiceProxy(context, serviceVersion);
 			proxy.open();
 			return proxy;
+		} catch(InvalidSyntaxException ise) {
+			throw new CamelManagerException(ise);
+		}
+	}
+	
+	public static String[] getAvailableVersions() throws CamelManagerException {
+		try {
+			BundleContext context = CamelModelServiceCoreActivator.getBundleContext();
+			Collection<ServiceReference<ICamelManagerService>> refs = BundleUtils.findServiceReferences(context, ICamelManagerService.class);
+			ArrayList<String> ret = new ArrayList<String>();
+			Iterator<ServiceReference<ICamelManagerService>> it = refs.iterator();
+			while(it.hasNext()) {
+				ServiceReference<ICamelManagerService> next = it.next();
+				String vers = (String)next.getProperty("camel.version");
+				if( !ret.contains(vers))
+					ret.add(vers);
+			}
+			return (String[]) ret.toArray(new String[ret.size()]);
 		} catch(InvalidSyntaxException ise) {
 			throw new CamelManagerException(ise);
 		}

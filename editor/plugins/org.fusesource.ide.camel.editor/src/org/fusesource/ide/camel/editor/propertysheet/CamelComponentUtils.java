@@ -41,9 +41,9 @@ import org.fusesource.ide.camel.model.catalog.components.Component;
 import org.fusesource.ide.camel.model.catalog.components.ComponentModel;
 import org.fusesource.ide.camel.model.catalog.components.ComponentProperty;
 import org.fusesource.ide.camel.model.catalog.components.UriParameter;
-import org.fusesource.ide.commons.util.IOUtils;
-import org.fusesource.ide.commons.util.JsonHelper;
-import org.fusesource.ide.commons.util.Strings;
+import org.fusesource.ide.foundation.core.util.Strings;
+import org.fusesource.ide.foundation.core.util.IOUtils;
+import org.fusesource.ide.foundation.core.util.JsonHelper;
 import org.jboss.dmr.ModelNode;
 
 /**
