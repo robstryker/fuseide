@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.fusesource.ide.camel.model.catalog.dataformats;
+package org.fusesource.ide.camel.model.service.core.catalog.eips;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -19,20 +19,19 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.fusesource.ide.camel.model.Activator;
-import org.fusesource.ide.camel.model.catalog.CamelModel;
-import org.fusesource.ide.camel.model.catalog.Dependency;
-import org.fusesource.ide.camel.model.catalog.Parameter;
+import org.fusesource.ide.camel.model.service.core.catalog.CamelModel;
+import org.fusesource.ide.camel.model.service.core.catalog.Parameter;
+import org.fusesource.ide.camel.model.service.core.internal.CamelModelServiceCoreActivator;
 import org.xml.sax.InputSource;
 
 /**
  * @author lhein
  */
-@XmlRootElement(name="dataformats")
-public class DataFormatModel {
+@XmlRootElement(name="eips")
+public class EipModel {
 
 	private CamelModel model;
-	private ArrayList<DataFormat> supportedDataFormats;
+	private ArrayList<Eip> supportedEIPs;
 	
 	/**
 	 * @return the model
@@ -49,19 +48,33 @@ public class DataFormatModel {
 	}
 	
 	/**
-	 * @return the supportedDataFormats
+	 * @return the supportedEIPs
 	 */
-	@XmlElement(name = "dataformat")
-	public ArrayList<DataFormat> getSupportedDataFormats() {
-		return this.supportedDataFormats;
+	@XmlElement(name = "eip")
+	public ArrayList<Eip> getSupportedEIPs() {
+		return this.supportedEIPs;
 	}
 	
 	/**
-	 * @param supportedDataFormats the supportedDataFormats to set
+	 * @param supportedEIPs the supportedEIPs to set
 	 */
-	public void setSupportedDataFormats(
-			ArrayList<DataFormat> supportedDataFormats) {
-		this.supportedDataFormats = supportedDataFormats;
+	public void setSupportedEIPs(ArrayList<Eip> supportedEIPs) {
+		this.supportedEIPs = supportedEIPs;
+	}
+	
+	/**
+	 * returns the EIP for the given class or null if not found
+	 * 
+	 * @param className
+	 * @return	the eip or null if not found
+	 */
+	public Eip getEIPByClass(String className) {
+		for (Eip eip : getSupportedEIPs()) {
+			if (eip.getName().equalsIgnoreCase(className)) {
+				return eip;
+			}
+		}
+		return null;
 	}
 		
 	/**
@@ -71,16 +84,16 @@ public class DataFormatModel {
 	 * @param parent	the parent model
 	 * @return			the created model instance of null on errors
 	 */
-	public static DataFormatModel getFactoryInstance(InputStream stream, CamelModel parent) {
+	public static EipModel getFactoryInstance(InputStream stream, CamelModel parent) {
 		try {
 			// create JAXB context and instantiate marshaller
-		    JAXBContext context = JAXBContext.newInstance(DataFormatModel.class, DataFormat.class, Dependency.class, Parameter.class);
+		    JAXBContext context = JAXBContext.newInstance(EipModel.class, Eip.class, Parameter.class);
 		    Unmarshaller um = context.createUnmarshaller();
-		    DataFormatModel model = (DataFormatModel) um.unmarshal(new InputSource(stream));
+		    EipModel model = (EipModel) um.unmarshal(new InputSource(stream));
 		    model.setModel(parent);
 		    return model;
 		} catch (JAXBException ex) {
-			Activator.getLogger().error(ex);
+			CamelModelServiceCoreActivator.pluginLog().logError(ex);
 		}
 		return null;
 	}

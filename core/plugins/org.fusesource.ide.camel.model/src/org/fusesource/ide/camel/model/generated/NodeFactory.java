@@ -21,9 +21,9 @@ import org.fusesource.ide.camel.model.AbstractNode;
 import org.fusesource.ide.camel.model.Activator;
 import org.fusesource.ide.camel.model.Endpoint;
 import org.fusesource.ide.camel.model.RouteContainer;
-import org.fusesource.ide.camel.model.catalog.CamelModel;
-import org.fusesource.ide.camel.model.catalog.CamelModelFactory;
-import org.fusesource.ide.camel.model.catalog.eips.Eip;
+import org.fusesource.ide.camel.model.service.core.catalog.CamelModel;
+import org.fusesource.ide.camel.model.service.core.catalog.CamelModelFactory;
+import org.fusesource.ide.camel.model.service.core.catalog.eips.Eip;
 
 /**
  * Provides a factory method to create the Eclipse model for a given Camel node

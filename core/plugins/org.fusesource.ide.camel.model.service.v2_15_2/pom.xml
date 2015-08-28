@@ -38,6 +38,11 @@
 					<artifactItems>
 						<artifactItem>
 							<groupId>org.apache.camel</groupId>
+            				<artifactId>camel-catalog</artifactId>
+							<version>${bundle.camel.version}</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>org.apache.camel</groupId>
             				<artifactId>camel-core</artifactId>
 							<version>${bundle.camel.version}</version>
 						</artifactItem>

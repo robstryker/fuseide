@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.fusesource.ide.camel.model.service.core;
 
+import java.net.URL;
 import java.text.MessageFormat;
 
 import org.osgi.framework.BundleContext;
@@ -29,6 +30,7 @@ public class CamelManagerServiceProxy extends ServiceTracker<ICamelManagerServic
 				context.createFilter(MessageFormat
 						.format("(&(objectClass={0})(camel.version={1}))", ICamelManagerService.class.getCanonicalName(), serviceVersion)), null); //$NON-NLS-1$
 		this.serviceVersion = serviceVersion;
+		open();
 	}
 	
 	public String getServiceVersion() {
@@ -42,8 +44,36 @@ public class CamelManagerServiceProxy extends ServiceTracker<ICamelManagerServic
 		}
 		return service;
 	}
+
+    /* (non-Javadoc)
+     * @see org.fusesource.ide.camel.model.service.core.ICamelManagerService#getComponentModelURL()
+     */
+    @Override
+    public URL getComponentModelURL() {
+    	return checkedGetService().getComponentModelURL();
+    }
     
-	public void doSomething() throws CamelManagerException {
-		checkedGetService().doSomething();
-	}
+    /* (non-Javadoc)
+     * @see org.fusesource.ide.camel.model.service.core.ICamelManagerService#getDataFormatModelURL()
+     */
+    @Override
+    public URL getDataFormatModelURL() {
+    	return checkedGetService().getDataFormatModelURL();
+    }
+    
+    /* (non-Javadoc)
+     * @see org.fusesource.ide.camel.model.service.core.ICamelManagerService#getEipModelURL()
+     */
+    @Override
+    public URL getEipModelURL() {
+    	return checkedGetService().getEipModelURL();
+    }
+    
+    /* (non-Javadoc)
+     * @see org.fusesource.ide.camel.model.service.core.ICamelManagerService#getLanguageModelURL()
+     */
+    @Override
+    public URL getLanguageModelURL() {
+    	return checkedGetService().getLanguageModelURL();
+    }
 }

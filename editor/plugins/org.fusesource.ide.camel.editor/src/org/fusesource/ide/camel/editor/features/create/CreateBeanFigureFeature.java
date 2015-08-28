@@ -14,8 +14,8 @@ package org.fusesource.ide.camel.editor.features.create;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.fusesource.ide.camel.editor.features.create.ext.CreateFigureFeature;
 import org.fusesource.ide.camel.model.AbstractNode;
-import org.fusesource.ide.camel.model.catalog.CamelModelFactory;
-import org.fusesource.ide.camel.model.catalog.eips.Eip;
+import org.fusesource.ide.camel.model.service.core.catalog.CamelModelFactory;
+import org.fusesource.ide.camel.model.service.core.catalog.eips.Eip;
 import org.fusesource.ide.camel.model.generated.UniversalEIPNode;
 
 

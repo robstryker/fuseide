@@ -52,7 +52,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
-import org.fusesource.ide.camel.model.catalog.Dependency;
+import org.fusesource.ide.camel.model.service.core.catalog.Dependency;
 import org.jboss.tools.fuse.transformation.FieldMapping;
 import org.jboss.tools.fuse.transformation.MappingOperation;
 import org.jboss.tools.fuse.transformation.Variable;

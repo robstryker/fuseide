@@ -10,8 +10,8 @@
  ******************************************************************************/
 package org.fusesource.ide.camel.model;
 
-import org.fusesource.ide.camel.model.catalog.CamelModelFactory;
 import org.fusesource.ide.camel.model.generated.UniversalEIPNode;
+import org.fusesource.ide.camel.model.service.core.catalog.CamelModelFactory;
 
 /**
  * @author lhein

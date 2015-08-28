@@ -9,16 +9,14 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 
-package org.fusesource.ide.camel.model.catalog;
+package org.fusesource.ide.camel.model.service.core.catalog;
 
-import java.net.URL;
 import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
-import org.fusesource.ide.camel.model.Activator;
+import org.fusesource.ide.camel.model.service.core.CamelServiceManagerUtil;
 
 /**
  * @author lhein
@@ -33,15 +31,11 @@ public class CamelModelFactory {
 	 */
 	public static void initializeModels() {
 		supportedCamelModels = new HashMap<String, CamelModel>();
-		Enumeration<URL> models = Activator.getDefault().getBundle().findEntries("catalogs", "*", false);
-		while (models.hasMoreElements()) {
-			URL model = models.nextElement();
-			String version = model.getFile();
-			version = version.substring(version.indexOf("catalogs/") + "catalogs/".length());
-			if (version.endsWith("/")) version = version.substring(0, version.length()-1);
-			CamelModel m = new CamelModel(version);
-			supportedCamelModels.put(version, m);				
-		}	
+		
+		String[] versions = CamelServiceManagerUtil.getAvailableVersions();
+		for (String version : versions) {
+			supportedCamelModels.put(version, new CamelModel(version)); // we initialize on access
+		}
 	}
 	
 	/**

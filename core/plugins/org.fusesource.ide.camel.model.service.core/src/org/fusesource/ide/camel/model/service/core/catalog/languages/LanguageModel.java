@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.fusesource.ide.camel.model.catalog.eips;
+package org.fusesource.ide.camel.model.service.core.catalog.languages;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -19,19 +19,20 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.fusesource.ide.camel.model.Activator;
-import org.fusesource.ide.camel.model.catalog.CamelModel;
-import org.fusesource.ide.camel.model.catalog.Parameter;
+import org.fusesource.ide.camel.model.service.core.catalog.CamelModel;
+import org.fusesource.ide.camel.model.service.core.catalog.Dependency;
+import org.fusesource.ide.camel.model.service.core.catalog.Parameter;
+import org.fusesource.ide.camel.model.service.core.internal.CamelModelServiceCoreActivator;
 import org.xml.sax.InputSource;
 
 /**
  * @author lhein
  */
-@XmlRootElement(name="eips")
-public class EipModel {
+@XmlRootElement(name="languages")
+public class LanguageModel {
 
 	private CamelModel model;
-	private ArrayList<Eip> supportedEIPs;
+	private ArrayList<Language> supportedLanguages;
 	
 	/**
 	 * @return the model
@@ -46,35 +47,20 @@ public class EipModel {
 	void setModel(CamelModel model) {
 		this.model = model;
 	}
-	
+
 	/**
-	 * @return the supportedEIPs
+	 * @return the supportedLanguages
 	 */
-	@XmlElement(name = "eip")
-	public ArrayList<Eip> getSupportedEIPs() {
-		return this.supportedEIPs;
+	@XmlElement(name = "language")
+	public ArrayList<Language> getSupportedLanguages() {
+		return this.supportedLanguages;
 	}
 	
 	/**
-	 * @param supportedEIPs the supportedEIPs to set
+	 * @param supportedLanguages the supportedLanguages to set
 	 */
-	public void setSupportedEIPs(ArrayList<Eip> supportedEIPs) {
-		this.supportedEIPs = supportedEIPs;
-	}
-	
-	/**
-	 * returns the EIP for the given class or null if not found
-	 * 
-	 * @param className
-	 * @return	the eip or null if not found
-	 */
-	public Eip getEIPByClass(String className) {
-		for (Eip eip : getSupportedEIPs()) {
-			if (eip.getName().equalsIgnoreCase(className)) {
-				return eip;
-			}
-		}
-		return null;
+	public void setSupportedLanguages(ArrayList<Language> supportedLanguages) {
+		this.supportedLanguages = supportedLanguages;
 	}
 		
 	/**
@@ -84,16 +70,16 @@ public class EipModel {
 	 * @param parent	the parent model
 	 * @return			the created model instance of null on errors
 	 */
-	public static EipModel getFactoryInstance(InputStream stream, CamelModel parent) {
+	public static LanguageModel getFactoryInstance(InputStream stream, CamelModel parent) {
 		try {
 			// create JAXB context and instantiate marshaller
-		    JAXBContext context = JAXBContext.newInstance(EipModel.class, Eip.class, Parameter.class);
+		    JAXBContext context = JAXBContext.newInstance(LanguageModel.class, Language.class, Dependency.class, Parameter.class);
 		    Unmarshaller um = context.createUnmarshaller();
-		    EipModel model = (EipModel) um.unmarshal(new InputSource(stream));
+		    LanguageModel model = (LanguageModel) um.unmarshal(new InputSource(stream));
 		    model.setModel(parent);
 		    return model;
 		} catch (JAXBException ex) {
-			Activator.getLogger().error(ex);
+			CamelModelServiceCoreActivator.pluginLog().logError(ex);
 		}
 		return null;
 	}

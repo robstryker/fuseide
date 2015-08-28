@@ -11,7 +11,7 @@
 
 package org.fusesource.ide.camel.model;
 
-import org.fusesource.ide.camel.model.catalog.CamelModelFactory;
+import org.fusesource.ide.camel.model.service.core.catalog.CamelModelFactory;
 import org.fusesource.ide.commons.camel.tools.CamelNamespaces;
 import org.fusesource.ide.commons.logging.RiderLogFacade;
 import org.fusesource.ide.commons.ui.ImagesActivatorSupport;

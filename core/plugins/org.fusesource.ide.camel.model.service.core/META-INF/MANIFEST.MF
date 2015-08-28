@@ -13,4 +13,9 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.11.0",
 Bundle-Activator: org.fusesource.ide.camel.model.service.core.internal.CamelModelServiceCoreActivator
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
-Export-Package: org.fusesource.ide.camel.model.service.core
+Export-Package: org.fusesource.ide.camel.model.service.core,
+ org.fusesource.ide.camel.model.service.core.catalog,
+ org.fusesource.ide.camel.model.service.core.catalog.components,
+ org.fusesource.ide.camel.model.service.core.catalog.dataformats,
+ org.fusesource.ide.camel.model.service.core.catalog.eips,
+ org.fusesource.ide.camel.model.service.core.catalog.languages

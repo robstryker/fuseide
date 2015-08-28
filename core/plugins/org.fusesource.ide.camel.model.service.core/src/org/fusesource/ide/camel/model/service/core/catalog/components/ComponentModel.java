@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.fusesource.ide.camel.model.catalog.languages;
+package org.fusesource.ide.camel.model.service.core.catalog.components;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -19,20 +19,19 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.fusesource.ide.camel.model.Activator;
-import org.fusesource.ide.camel.model.catalog.CamelModel;
-import org.fusesource.ide.camel.model.catalog.Dependency;
-import org.fusesource.ide.camel.model.catalog.Parameter;
+import org.fusesource.ide.camel.model.service.core.catalog.CamelModel;
+import org.fusesource.ide.camel.model.service.core.catalog.Dependency;
+import org.fusesource.ide.camel.model.service.core.internal.CamelModelServiceCoreActivator;
 import org.xml.sax.InputSource;
 
 /**
  * @author lhein
  */
-@XmlRootElement(name="languages")
-public class LanguageModel {
+@XmlRootElement(name="components")
+public class ComponentModel {
 
 	private CamelModel model;
-	private ArrayList<Language> supportedLanguages;
+	private ArrayList<Component> supportedComponents;
 	
 	/**
 	 * @return the model
@@ -47,22 +46,35 @@ public class LanguageModel {
 	void setModel(CamelModel model) {
 		this.model = model;
 	}
-
+	
 	/**
-	 * @return the supportedLanguages
+	 * @return the supportedComponents
 	 */
-	@XmlElement(name = "language")
-	public ArrayList<Language> getSupportedLanguages() {
-		return this.supportedLanguages;
+	@XmlElement(name = "component")
+	public ArrayList<Component> getSupportedComponents() {
+		return this.supportedComponents;
 	}
 	
 	/**
-	 * @param supportedLanguages the supportedLanguages to set
+	 * @param supportedComponents the supportedComponents to set
 	 */
-	public void setSupportedLanguages(ArrayList<Language> supportedLanguages) {
-		this.supportedLanguages = supportedLanguages;
+	public void setSupportedComponents(ArrayList<Component> supportedComponents) {
+		this.supportedComponents = supportedComponents;
 	}
 		
+	/**
+	 * looks up the connector which supports the given protocol prefix
+	 * 
+	 * @param scheme
+	 * @return
+	 */
+	public Component getComponentForScheme(String scheme) {
+	    for (Component c : supportedComponents) {
+            if (c.supportsScheme(scheme)) return c;
+        }
+        return null;
+	}
+	
 	/**
 	 * creates the model from the given input stream and sets the parent model before it returns it
 	 * 
@@ -70,16 +82,16 @@ public class LanguageModel {
 	 * @param parent	the parent model
 	 * @return			the created model instance of null on errors
 	 */
-	public static LanguageModel getFactoryInstance(InputStream stream, CamelModel parent) {
+	public static ComponentModel getFactoryInstance(InputStream stream, CamelModel parent) {
 		try {
 			// create JAXB context and instantiate marshaller
-		    JAXBContext context = JAXBContext.newInstance(LanguageModel.class, Language.class, Dependency.class, Parameter.class);
+		    JAXBContext context = JAXBContext.newInstance(ComponentModel.class, Component.class, Dependency.class, ComponentProperty.class, UriParameter.class);
 		    Unmarshaller um = context.createUnmarshaller();
-		    LanguageModel model = (LanguageModel) um.unmarshal(new InputSource(stream));
+		    ComponentModel model = (ComponentModel) um.unmarshal(new InputSource(stream));
 		    model.setModel(parent);
 		    return model;
 		} catch (JAXBException ex) {
-			Activator.getLogger().error(ex);
+			CamelModelServiceCoreActivator.pluginLog().logError(ex);
 		}
 		return null;
 	}

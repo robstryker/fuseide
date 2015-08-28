@@ -20,9 +20,9 @@ import org.fusesource.ide.camel.model.Activator;
 import org.fusesource.ide.camel.model.Endpoint;
 import org.fusesource.ide.camel.model.RouteContainer;
 import org.fusesource.ide.camel.model.RouteSupport;
-import org.fusesource.ide.camel.model.catalog.CamelModel;
-import org.fusesource.ide.camel.model.catalog.CamelModelFactory;
-import org.fusesource.ide.camel.model.catalog.eips.Eip;
+import org.fusesource.ide.camel.model.service.core.catalog.CamelModel;
+import org.fusesource.ide.camel.model.service.core.catalog.CamelModelFactory;
+import org.fusesource.ide.camel.model.service.core.catalog.eips.Eip;
 import org.fusesource.ide.camel.model.generated.Route;
 import org.fusesource.ide.camel.model.generated.UniversalEIPNode;
 

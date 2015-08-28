@@ -22,9 +22,9 @@ import org.eclipse.jface.action.IMenuManager;
 import org.fusesource.ide.camel.editor.Messages;
 import org.fusesource.ide.camel.editor.provider.AbstractAddNodeMenuFactory;
 import org.fusesource.ide.camel.model.Endpoint;
-import org.fusesource.ide.camel.model.catalog.CamelModel;
-import org.fusesource.ide.camel.model.catalog.CamelModelFactory;
-import org.fusesource.ide.camel.model.catalog.eips.Eip;
+import org.fusesource.ide.camel.model.service.core.catalog.CamelModel;
+import org.fusesource.ide.camel.model.service.core.catalog.CamelModelFactory;
+import org.fusesource.ide.camel.model.service.core.catalog.eips.Eip;
 import org.fusesource.ide.camel.model.generated.UniversalEIPUtility;
 import org.fusesource.ide.foundation.core.util.Strings;
 

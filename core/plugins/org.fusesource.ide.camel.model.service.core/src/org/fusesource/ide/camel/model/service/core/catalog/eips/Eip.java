@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.fusesource.ide.camel.model.catalog.eips;
+package org.fusesource.ide.camel.model.service.core.catalog.eips;
 
 import java.util.ArrayList;
 
@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.fusesource.ide.camel.model.catalog.Parameter;
+import org.fusesource.ide.camel.model.service.core.catalog.Parameter;
 
 /**
  * @author lhein

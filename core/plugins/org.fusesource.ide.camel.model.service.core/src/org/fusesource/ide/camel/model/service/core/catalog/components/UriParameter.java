@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.fusesource.ide.camel.model.catalog.components;
+package org.fusesource.ide.camel.model.service.core.catalog.components;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -16,16 +16,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * @author lhein
  */
-@XmlRootElement(name = "componentProperty")
-public class ComponentProperty {
-
+@XmlRootElement(name = "uriParameter")
+public class UriParameter {
 	private String name;
 	private String type;
 	private String javaType;
 	private String kind;
 	private String deprecated;
 	private String description;
+	private String required;
 	private String defaultValue;
+	private String choice;
+	private String label;
+	
+	/**
+	 * @return the choice
+	 */
+	@XmlAttribute(name = "choice")
+	public String getChoice() {
+		return this.choice;
+	}
 	
 	/**
 	 * @return the defaultValue
@@ -66,6 +76,14 @@ public class ComponentProperty {
 	public String getKind() {
 		return this.kind;
 	}
+
+	/**
+	 * @return the label
+	 */
+	@XmlAttribute(name = "label")
+	public String getLabel() {
+		return this.label;
+	}
 	
 	/**
 	 * @return the name
@@ -76,11 +94,26 @@ public class ComponentProperty {
 	}
 	
 	/**
+	 * @return the required
+	 */
+	@XmlAttribute(name = "required")
+	public String getRequired() {
+		return this.required;
+	}
+	
+	/**
 	 * @return the type
 	 */
 	@XmlAttribute(name = "type")
 	public String getType() {
 		return this.type;
+	}
+	
+	/**
+	 * @param choice the choice to set
+	 */
+	public void setChoice(String choice) {
+		this.choice = choice;
 	}
 	
 	/**
@@ -117,12 +150,26 @@ public class ComponentProperty {
 	public void setKind(String kind) {
 		this.kind = kind;
 	}
-
+	
+	/**
+	 * @param label the label to set
+	 */
+	public void setLabel(String label) {
+		this.label = label;
+	}
+	
 	/**
 	 * @param name the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	/**
+	 * @param required the required to set
+	 */
+	public void setRequired(String required) {
+		this.required = required;
 	}
 	
 	/**
