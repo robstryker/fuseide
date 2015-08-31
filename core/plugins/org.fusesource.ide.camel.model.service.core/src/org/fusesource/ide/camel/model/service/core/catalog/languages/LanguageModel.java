@@ -44,7 +44,7 @@ public class LanguageModel {
 	/**
 	 * @param model the model to set
 	 */
-	void setModel(CamelModel model) {
+	public void setModel(CamelModel model) {
 		this.model = model;
 	}
 
@@ -64,19 +64,17 @@ public class LanguageModel {
 	}
 		
 	/**
-	 * creates the model from the given input stream and sets the parent model before it returns it
+	 * creates the model from the given input stream 
 	 * 
 	 * @param stream	the stream to parse
-	 * @param parent	the parent model
 	 * @return			the created model instance of null on errors
 	 */
-	public static LanguageModel getFactoryInstance(InputStream stream, CamelModel parent) {
+	public static LanguageModel getXMLFactoryInstance(InputStream stream) {
 		try {
 			// create JAXB context and instantiate marshaller
 		    JAXBContext context = JAXBContext.newInstance(LanguageModel.class, Language.class, Dependency.class, Parameter.class);
 		    Unmarshaller um = context.createUnmarshaller();
 		    LanguageModel model = (LanguageModel) um.unmarshal(new InputSource(stream));
-		    model.setModel(parent);
 		    return model;
 		} catch (JAXBException ex) {
 			CamelModelServiceCoreActivator.pluginLog().logError(ex);

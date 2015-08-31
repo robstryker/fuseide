@@ -43,7 +43,7 @@ public class ComponentModel {
 	/**
 	 * @param model the model to set
 	 */
-	void setModel(CamelModel model) {
+	public void setModel(CamelModel model) {
 		this.model = model;
 	}
 	
@@ -76,19 +76,17 @@ public class ComponentModel {
 	}
 	
 	/**
-	 * creates the model from the given input stream and sets the parent model before it returns it
+	 * creates the model from the given input stream 
 	 * 
 	 * @param stream	the stream to parse
-	 * @param parent	the parent model
 	 * @return			the created model instance of null on errors
 	 */
-	public static ComponentModel getFactoryInstance(InputStream stream, CamelModel parent) {
+	public static ComponentModel getXMLFactoryInstance(InputStream stream) {
 		try {
 			// create JAXB context and instantiate marshaller
 		    JAXBContext context = JAXBContext.newInstance(ComponentModel.class, Component.class, Dependency.class, ComponentProperty.class, UriParameter.class);
 		    Unmarshaller um = context.createUnmarshaller();
 		    ComponentModel model = (ComponentModel) um.unmarshal(new InputSource(stream));
-		    model.setModel(parent);
 		    return model;
 		} catch (JAXBException ex) {
 			CamelModelServiceCoreActivator.pluginLog().logError(ex);

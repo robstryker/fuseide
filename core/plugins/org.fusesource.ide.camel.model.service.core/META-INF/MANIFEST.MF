@@ -15,6 +15,7 @@ Bundle-Activator: org.fusesource.ide.camel.model.service.core.internal.CamelMode
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Export-Package: org.fusesource.ide.camel.model.service.core,
+ org.fusesource.ide.camel.model.service.core.adopters,
  org.fusesource.ide.camel.model.service.core.catalog,
  org.fusesource.ide.camel.model.service.core.catalog.components,
  org.fusesource.ide.camel.model.service.core.catalog.dataformats,

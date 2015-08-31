@@ -10,37 +10,23 @@
  ******************************************************************************/ 
 package org.fusesource.ide.camel.model.service.core;
 
-import java.net.URL;
+import org.fusesource.ide.camel.model.service.core.catalog.CamelModel;
 
 public interface ICamelManagerService {
 
 	public static final String CAMEL_VERSION_PROPERTY = "camel.version"; //$NON-NLS-1$
 
 	/**
-	 * returns the url to the components model xml file
+	 * creates and returns the camel model for a specific version
 	 * 
-	 * @return
+	 * @return	the camel model
 	 */
-	URL getComponentModelURL();
+	CamelModel getCamelModel();
 	
 	/**
-	 * returns the url to the eip model xml file
+	 * returns the schema provider 
 	 * 
 	 * @return
 	 */
-	URL getEipModelURL();
-
-	/**
-	 * returns the url to the language model xml file
-	 * 
-	 * @return
-	 */
-	URL getLanguageModelURL();
-
-	/**
-	 * returns the url to the data formats model xml file
-	 * 
-	 * @return
-	 */
-	URL getDataFormatModelURL();
+	CamelSchemaProvider getCamelSchemaProvider();
 }

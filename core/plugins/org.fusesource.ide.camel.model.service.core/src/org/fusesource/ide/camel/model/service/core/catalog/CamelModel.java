@@ -11,12 +11,10 @@
 
 package org.fusesource.ide.camel.model.service.core.catalog;
 
-import org.fusesource.ide.camel.model.service.core.CamelServiceManagerUtil;
 import org.fusesource.ide.camel.model.service.core.catalog.components.ComponentModel;
 import org.fusesource.ide.camel.model.service.core.catalog.dataformats.DataFormatModel;
 import org.fusesource.ide.camel.model.service.core.catalog.eips.EipModel;
 import org.fusesource.ide.camel.model.service.core.catalog.languages.LanguageModel;
-import org.fusesource.ide.camel.model.service.core.internal.CamelModelServiceCoreActivator;
 
 /**
  * @author lhein
@@ -29,6 +27,12 @@ public class CamelModel {
 	private DataFormatModel dataformatModel;
 	private EipModel eipModel;
 	private LanguageModel languageModel;
+	
+	/**
+	 * 
+	 */
+	public CamelModel() {
+	}
 	
 	/**
 	 * creates a model skeleton for the given camel version
@@ -48,16 +52,48 @@ public class CamelModel {
 	}
 	
 	/**
+	 * @param camelVersion the camelVersion to set
+	 */
+	public void setCamelVersion(String camelVersion) {
+		this.camelVersion = camelVersion;
+	}
+	
+	/**
+	 * @param componentModel the componentModel to set
+	 */
+	public void setComponentModel(ComponentModel componentModel) {
+		this.componentModel = componentModel;
+		this.componentModel.setModel(this);
+	}
+	
+	/**
+	 * @param dataformatModel the dataformatModel to set
+	 */
+	public void setDataformatModel(DataFormatModel dataformatModel) {
+		this.dataformatModel = dataformatModel;
+		this.dataformatModel.setModel(this);
+	}
+	
+	/**
+	 * @param eipModel the eipModel to set
+	 */
+	public void setEipModel(EipModel eipModel) {
+		this.eipModel = eipModel;
+		this.eipModel.setModel(this);
+	}
+	
+	/**
+	 * @param languageModel the languageModel to set
+	 */
+	public void setLanguageModel(LanguageModel languageModel) {
+		this.languageModel = languageModel;
+		this.languageModel.setModel(this);
+	}
+	
+	/**
 	 * @return the componentModel
 	 */
 	public synchronized ComponentModel getComponentModel() {
-		if (this.componentModel == null) {
-			try {
-				this.componentModel = ComponentModel.getFactoryInstance(CamelServiceManagerUtil.getManagerService(camelVersion).getComponentModelURL().openStream(), this);
-			} catch (Exception ex) {
-				CamelModelServiceCoreActivator.pluginLog().logError(ex);
-			}
-		}
 		return this.componentModel;
 	}
 	
@@ -65,13 +101,6 @@ public class CamelModel {
 	 * @return the dataformatModel
 	 */
 	public synchronized DataFormatModel getDataformatModel() {
-		if (this.dataformatModel == null) {
-			try {
-				this.dataformatModel = DataFormatModel.getFactoryInstance(CamelServiceManagerUtil.getManagerService(camelVersion).getDataFormatModelURL().openStream(), this);
-			} catch (Exception ex) {
-				CamelModelServiceCoreActivator.pluginLog().logError(ex);
-			}
-		}
 		return this.dataformatModel;
 	}
 	
@@ -79,13 +108,6 @@ public class CamelModel {
 	 * @return the eipModel
 	 */
 	public synchronized EipModel getEipModel() {
-		if (this.eipModel == null) {
-			try {
-				this.eipModel = EipModel.getFactoryInstance(CamelServiceManagerUtil.getManagerService(camelVersion).getEipModelURL().openStream(), this);
-			} catch (Exception ex) {
-				CamelModelServiceCoreActivator.pluginLog().logError(ex);
-			}
-		}
 		return this.eipModel;
 	}
 	
@@ -93,13 +115,6 @@ public class CamelModel {
 	 * @return the languageModel
 	 */
 	public synchronized LanguageModel getLanguageModel() {
-		if (this.languageModel == null){
-			try {
-				this.languageModel = LanguageModel.getFactoryInstance(CamelServiceManagerUtil.getManagerService(camelVersion).getLanguageModelURL().openStream(), this);
-			} catch (Exception ex) {
-				CamelModelServiceCoreActivator.pluginLog().logError(ex);
-			}
-		}
 		return this.languageModel;
 	}
 }

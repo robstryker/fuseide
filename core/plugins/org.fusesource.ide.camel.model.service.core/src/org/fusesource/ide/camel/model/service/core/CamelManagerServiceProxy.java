@@ -10,9 +10,9 @@
  ******************************************************************************/ 
 package org.fusesource.ide.camel.model.service.core;
 
-import java.net.URL;
 import java.text.MessageFormat;
 
+import org.fusesource.ide.camel.model.service.core.catalog.CamelModel;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.util.tracker.ServiceTracker;
@@ -46,34 +46,20 @@ public class CamelManagerServiceProxy extends ServiceTracker<ICamelManagerServic
 	}
 
     /* (non-Javadoc)
-     * @see org.fusesource.ide.camel.model.service.core.ICamelManagerService#getComponentModelURL()
+     * @see org.fusesource.ide.camel.model.service.core.ICamelManagerService#getCamelModel()
      */
     @Override
-    public URL getComponentModelURL() {
-    	return checkedGetService().getComponentModelURL();
+    public CamelModel getCamelModel() {
+    	CamelModel cm = checkedGetService().getCamelModel();
+    	cm.setCamelVersion(this.serviceVersion);
+    	return cm;
     }
     
     /* (non-Javadoc)
-     * @see org.fusesource.ide.camel.model.service.core.ICamelManagerService#getDataFormatModelURL()
+     * @see org.fusesource.ide.camel.model.service.core.ICamelManagerService#getCamelSchemaProvider()
      */
     @Override
-    public URL getDataFormatModelURL() {
-    	return checkedGetService().getDataFormatModelURL();
-    }
-    
-    /* (non-Javadoc)
-     * @see org.fusesource.ide.camel.model.service.core.ICamelManagerService#getEipModelURL()
-     */
-    @Override
-    public URL getEipModelURL() {
-    	return checkedGetService().getEipModelURL();
-    }
-    
-    /* (non-Javadoc)
-     * @see org.fusesource.ide.camel.model.service.core.ICamelManagerService#getLanguageModelURL()
-     */
-    @Override
-    public URL getLanguageModelURL() {
-    	return checkedGetService().getLanguageModelURL();
+    public CamelSchemaProvider getCamelSchemaProvider() {
+    	return checkedGetService().getCamelSchemaProvider();
     }
 }

@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.fusesource.ide.camel.model.service.core.CamelServiceManagerUtil;
+import org.fusesource.ide.camel.model.service.core.ICamelManagerService;
 
 /**
  * @author lhein
@@ -34,7 +35,7 @@ public class CamelModelFactory {
 		
 		String[] versions = CamelServiceManagerUtil.getAvailableVersions();
 		for (String version : versions) {
-			supportedCamelModels.put(version, new CamelModel(version)); // we initialize on access
+			supportedCamelModels.put(version, null); // we initialize on access
 		}
 	}
 	
@@ -57,7 +58,19 @@ public class CamelModelFactory {
 	 * @return
 	 */
 	public static CamelModel getModelForVersion(String camelVersion) {
-		return supportedCamelModels.get(camelVersion);
+		CamelModel cm = supportedCamelModels.get(camelVersion);
+		
+		if (cm == null) {
+			// not initialized yet
+			ICamelManagerService svc = CamelServiceManagerUtil.getManagerService(camelVersion);
+			if (svc != null) {
+				cm = svc.getCamelModel();
+				cm.setCamelVersion(camelVersion);
+				supportedCamelModels.put(camelVersion, cm);
+			}
+		}
+		
+		return cm;
 	}
 	
 	/**

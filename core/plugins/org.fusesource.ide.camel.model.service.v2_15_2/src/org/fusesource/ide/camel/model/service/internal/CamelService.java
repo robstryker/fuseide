@@ -1,8 +1,15 @@
 package org.fusesource.ide.camel.model.service.internal;
 
+import java.io.IOException;
 import java.net.URL;
 
+import org.apache.camel.catalog.CamelCatalog;
+import org.apache.camel.catalog.DefaultCamelCatalog;
+import org.fusesource.ide.camel.model.service.core.CamelSchemaProvider;
 import org.fusesource.ide.camel.model.service.core.ICamelManagerService;
+import org.fusesource.ide.camel.model.service.core.adopters.CamelModelLoader;
+import org.fusesource.ide.camel.model.service.core.adopters.XmlCamelModelLoader;
+import org.fusesource.ide.camel.model.service.core.catalog.CamelModel;
 
 public class CamelService implements ICamelManagerService {
 
@@ -24,36 +31,49 @@ public class CamelService implements ICamelManagerService {
 	private static final String EIPS_CATALOG_FILE = String.format("%s/%s", CATALOG_FOLDER, EIPS_FILENAME);
 	private static final String LANGUAGES_CATALOG_FILE = String.format("%s/%s", CATALOG_FOLDER, LANGUAGES_FILENAME);
 	private static final String DATAFORMATS_CATALOG_FILE = String.format("%s/%s", CATALOG_FOLDER, DATAFORMATS_FILENAME);
+
+	private CamelModelLoader loader;
+	private CamelCatalog catalog;
 	
 	/* (non-Javadoc)
-	 * @see org.fusesource.ide.camel.model.service.core.ICamelManagerService#getComponentModelURL()
+	 * @see org.fusesource.ide.camel.model.service.core.ICamelManagerService#getCamelModel()
 	 */
 	@Override
-	public URL getComponentModelURL() {
+	public CamelModel getCamelModel() {
+		if (this.loader == null) this.loader = new XmlCamelModelLoader();
+		try {
+			return loader.getCamelModel(	getComponentModelURL(), 
+											getEipModelURL(), 
+											getLanguageModelURL(), 
+											getDataFormatModelURL());
+		} catch (IOException ex) {
+			CamelServiceImplementationActivator.pluginLog().logError(ex);
+		}
+		return null;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.fusesource.ide.camel.model.service.core.ICamelManagerService#getCamelSchemaProvider()
+	 */
+	@Override
+	public CamelSchemaProvider getCamelSchemaProvider() {
+		if (catalog == null) catalog = new DefaultCamelCatalog();
+		return new CamelSchemaProvider(catalog.blueprintSchemaAsXml(), catalog.springSchemaAsXml());
+	}	
+	
+	private URL getComponentModelURL() {
 		return CamelServiceImplementationActivator.getDefault().getBundle().getEntry(COMPONENTS_CATALOG_FILE);
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.fusesource.ide.camel.model.service.core.ICamelManagerService#getEipModelURL()
-	 */
-	@Override
-	public URL getEipModelURL() {
+	private URL getEipModelURL() {
 		return CamelServiceImplementationActivator.getDefault().getBundle().getEntry(EIPS_CATALOG_FILE);
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.fusesource.ide.camel.model.service.core.ICamelManagerService#getDataFormatModelURL()
-	 */
-	@Override
-	public URL getDataFormatModelURL() {
+	private URL getDataFormatModelURL() {
 		return CamelServiceImplementationActivator.getDefault().getBundle().getEntry(DATAFORMATS_CATALOG_FILE);
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.fusesource.ide.camel.model.service.core.ICamelManagerService#getLanguageModelURL()
-	 */
-	@Override
-	public URL getLanguageModelURL() {
+	private URL getLanguageModelURL() {
 		return CamelServiceImplementationActivator.getDefault().getBundle().getEntry(LANGUAGES_CATALOG_FILE);
 	}
 }
