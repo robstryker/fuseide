@@ -10,9 +10,13 @@
  ******************************************************************************/ 
 package org.fusesource.ide.camel.model.service.core;
 
+import java.io.IOException;
 import java.text.MessageFormat;
 
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.fusesource.ide.camel.model.service.core.catalog.CamelModel;
+import org.fusesource.ide.camel.model.service.core.model.CamelFile;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.util.tracker.ServiceTracker;
@@ -61,5 +65,21 @@ public class CamelManagerServiceProxy extends ServiceTracker<ICamelManagerServic
     @Override
     public CamelSchemaProvider getCamelSchemaProvider() {
     	return checkedGetService().getCamelSchemaProvider();
+    }
+    
+    /* (non-Javadoc)
+     * @see org.fusesource.ide.camel.model.service.core.ICamelManagerService#loadCamelFile(org.eclipse.core.resources.IResource, org.eclipse.core.runtime.IProgressMonitor)
+     */
+    @Override
+    public CamelFile loadCamelFile(IResource res, IProgressMonitor monitor) throws IOException {
+    	return checkedGetService().loadCamelFile(res, monitor);
+    }
+    
+    /* (non-Javadoc)
+     * @see org.fusesource.ide.camel.model.service.core.ICamelManagerService#saveCamelFile(org.fusesource.ide.camel.model.service.core.model.CamelFile, org.eclipse.core.resources.IResource, org.eclipse.core.runtime.IProgressMonitor)
+     */
+    @Override
+    public void saveCamelFile(CamelFile camelFile, IResource res, IProgressMonitor monitor) throws IOException {
+    	checkedGetService().saveCamelFile(camelFile, res, monitor);
     }
 }

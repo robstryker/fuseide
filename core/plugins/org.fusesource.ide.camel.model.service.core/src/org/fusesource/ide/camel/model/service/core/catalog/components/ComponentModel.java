@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.fusesource.ide.camel.model.service.core.catalog.CamelModel;
 import org.fusesource.ide.camel.model.service.core.catalog.Dependency;
+import org.fusesource.ide.camel.model.service.core.catalog.Parameter;
 import org.fusesource.ide.camel.model.service.core.internal.CamelModelServiceCoreActivator;
 import org.xml.sax.InputSource;
 
@@ -84,7 +85,7 @@ public class ComponentModel {
 	public static ComponentModel getXMLFactoryInstance(InputStream stream) {
 		try {
 			// create JAXB context and instantiate marshaller
-		    JAXBContext context = JAXBContext.newInstance(ComponentModel.class, Component.class, Dependency.class, ComponentProperty.class, UriParameter.class);
+		    JAXBContext context = JAXBContext.newInstance(ComponentModel.class, Component.class, Dependency.class, ComponentProperty.class, Parameter.class);
 		    Unmarshaller um = context.createUnmarshaller();
 		    ComponentModel model = (ComponentModel) um.unmarshal(new InputSource(stream));
 		    return model;

@@ -17,13 +17,14 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.fusesource.ide.camel.model.service.core.catalog.Dependency;
+import org.fusesource.ide.camel.model.service.core.catalog.ICamelCatalogElement;
 import org.fusesource.ide.camel.model.service.core.catalog.Parameter;
 
 /**
  * @author lhein
  */
 @XmlRootElement(name = "language")
-public class Language {
+public class Language implements ICamelCatalogElement {
 	
 	private String name;
 	private ArrayList<String> tags;

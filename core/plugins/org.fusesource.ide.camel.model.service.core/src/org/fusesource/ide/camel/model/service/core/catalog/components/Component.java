@@ -17,12 +17,14 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.fusesource.ide.camel.model.service.core.catalog.Dependency;
+import org.fusesource.ide.camel.model.service.core.catalog.ICamelCatalogElement;
+import org.fusesource.ide.camel.model.service.core.catalog.Parameter;
 
 /**
  * @author lhein
  */
 @XmlRootElement(name = "component")
-public class Component {
+public class Component implements ICamelCatalogElement {
 	
 	private String id;
 	private String clazz;
@@ -36,7 +38,7 @@ public class Component {
 	private ArrayList<Dependency> dependencies;
 	private ArrayList<String> tags;
 	private ArrayList<ComponentProperty> componentProperties;
-	private ArrayList<UriParameter> uriParameters;
+	private ArrayList<Parameter> uriParameters;
 	
 	/**
 	 * @return the componentProperties
@@ -60,14 +62,14 @@ public class Component {
 	 */
 	@XmlElementWrapper(name = "uriParameters")
 	@XmlElement(name = "uriParameter")
-	public ArrayList<UriParameter> getUriParameters() {
+	public ArrayList<Parameter> getUriParameters() {
 		return this.uriParameters;
 	}
 	
 	/**
 	 * @param uriParameters the uriParameters to set
 	 */
-	public void setUriParameters(ArrayList<UriParameter> uriParameters) {
+	public void setUriParameters(ArrayList<Parameter> uriParameters) {
 		this.uriParameters = uriParameters;
 	}
 	

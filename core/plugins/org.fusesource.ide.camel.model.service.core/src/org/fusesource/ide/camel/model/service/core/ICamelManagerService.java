@@ -10,7 +10,12 @@
  ******************************************************************************/ 
 package org.fusesource.ide.camel.model.service.core;
 
+import java.io.IOException;
+
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.fusesource.ide.camel.model.service.core.catalog.CamelModel;
+import org.fusesource.ide.camel.model.service.core.model.CamelFile;
 
 public interface ICamelManagerService {
 
@@ -29,4 +34,24 @@ public interface ICamelManagerService {
 	 * @return
 	 */
 	CamelSchemaProvider getCamelSchemaProvider();
+
+	/**
+	 * loads a camel context file from the given resource
+	 * 
+	 * @param res		the resource
+	 * @param monitor	the progress monitor
+	 * @return	the camel context file object containing all data
+	 * @throws IOException	on load errors
+	 */
+	CamelFile loadCamelFile(IResource res, IProgressMonitor monitor) throws IOException;
+	
+	/**
+	 * saves the given camel file to the given resource
+	 *  
+	 * @param camelFile		the camel file
+	 * @param res			the resource to save to
+	 * @param monitor		the progress monitor
+	 * @throws IOException	on errors
+	 */
+	void saveCamelFile(CamelFile camelFile, IResource res, IProgressMonitor monitor) throws IOException;
 }
